@@ -1,0 +1,17 @@
+@import '../../utilities/mixins.module.scss';
+@import '../../utilities/colors.module.scss';
+
+.Delete {
+  @include icon($red, $lightRed, 30px);
+}
+
+.Edit {
+  @include icon($primaryPurple, $secondaryPurple, 30px);
+}
+
+.ActionIcons {
+  @include flexRowAround();
+  width: 50%;
+  position: relative;
+  left: 25%;
+}

@@ -1,0 +1,13 @@
+@import '../../utilities/mixins.module.scss';
+@import '../../utilities/colors.module.scss';
+
+.CardItems {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.CardItems label {
+  font-weight: bold;
+  font-size: 1rem;
+}

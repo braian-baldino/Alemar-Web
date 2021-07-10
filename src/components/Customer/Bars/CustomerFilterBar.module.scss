@@ -1,0 +1,13 @@
+@import '../../../utilities/colors.module.scss';
+@import '../../../utilities/mixins.module.scss';
+
+.FilterBar {
+  @include flexRowAround;
+  @include whiteCenteredBox(95%);
+
+  margin-top: 2%;
+  margin-bottom: 1%;
+  padding: 12px;
+  box-sizing: border-box;
+  box-shadow: 0 0px 10px 1px $primaryPurple;
+}

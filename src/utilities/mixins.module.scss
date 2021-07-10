@@ -1,0 +1,45 @@
+@import './colors.module.scss';
+
+@mixin whiteCenteredBox($widht) {
+  background-color: white;
+  width: $widht;
+  margin: 0 auto;
+  border-radius: 4px;
+}
+
+@mixin flexRowEvenly {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+@mixin flexRowBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flexRowAround {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+@mixin links($color) {
+  a:active,
+  :link,
+  :visited {
+    color: $color;
+    text-decoration: none;
+  }
+}
+
+@mixin icon($color, $hoverColor, $squareSize) {
+  color: $color;
+  height: $squareSize;
+  width: $squareSize;
+  &:hover {
+    color: $hoverColor;
+  }
+}

@@ -1,0 +1,6 @@
+@import '../../utilities/mixins.module.scss';
+@import '../../utilities/colors.module.scss';
+
+.AddCustomerIcon {
+  @include icon($primaryPurple, $secondaryPurple, 30px);
+}
