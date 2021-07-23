@@ -6,52 +6,26 @@ import styles from './Sale.module.scss';
 import SalesFilterBar from './Bars/SalesFilterBar';
 import SaleCard from './SaleCard';
 
-const tableMainHeaders = [
-  'Orden N°',
-  'Monto',
-  'Fecha de Entrega',
-  'Estado del Pedido',
-  'Administrar',
-];
+const itemsToDisplay = [{label:'Cliente',key: 'customerFullName'},{label:'CUIT',key: 'customerCuitCuil'},{label:'Seña',key: 'initialDeposit'},{label:'Resta abonar',key: 'finalDeposit'},{label:'Total',key: 'amount'}];
 
-const detailsTableHeaders = [
-  'Fecha de Emision',
-  'Cliente',
-  'Direccion',
-  'Localidad',
-  'Telefono',
-  'CUIT/CUIL',
-];
+const header = {label: 'N°', key:'orderNumber'};
 
-const mainKeys = ['orderNumber', 'amount', 'deliveryDate', 'status'];
-
-const detailsKeys = [
-  'creationDate',
-  'customerFullName',
-  'customerAddress',
-  'customerRegion',
-  'customerTelephone',
-  'customerCuitCuil',
-];
-
-const mapSalesToDataTable = sales => {
+const mapSalesToDataCard = sales => {
   return sales.map(sale => {
     return {
       id: sale.id,
       orderNumber: sale.orderNumber,
       amount: '$' + sale.amount,
+      initialDeposit : '$'+ sale.initialDeposit,
+      finalDeposit : '$'+ sale.finalDeposit,
       deliveryDate: sale.deliveryDate,
       status: sale.status,
-      details: [
-        {
-          creationDate: sale.creationDate,
-          customerFullName: `${sale.customer.firstName} ${sale.customer.lastName}`,
-          customerAddress: sale.customer.address,
-          customerRegion: sale.customer.region,
-          customerTelephone: sale.customer.telephone,
-          customerCuitCuil: sale.customer.cuitCuil,
-        },
-      ],
+      creationDate: sale.creationDate,
+      customerFullName: `${sale.customer.firstName} ${sale.customer.lastName}`,
+      customerAddress: sale.customer.address,
+      customerRegion: sale.customer.region,
+      customerTelephone: sale.customer.telephone,
+      customerCuitCuil: sale.customer.cuitCuil,
       // productsSold: sale.productsSold,
     };
   });
@@ -60,20 +34,17 @@ const mapSalesToDataTable = sales => {
 const Sale = () => {
   const [sales, setSales] = useState(mockSales);
 
+  const mappedSales = mapSalesToDataCard(sales);
   return (
     <Section>
       <SalesFilterBar onFilter={() => {}} />
       <div className={styles.GridCards}>
-        {/* <ExtenseTable
-          tableData={sales}
-          mapData={mapSalesToDataTable}
-          mainHeaders={tableMainHeaders}
-          detailsHeaders={detailsTableHeaders}
-          mainKeys={mainKeys}
-          detailsKeys={detailsKeys}
-        /> */}
-        {sales.map((sale, i) => {
-          return <SaleCard key={i} sale={sale} />;
+        {mappedSales.map((sale, i) => {
+          return <SaleCard 
+                    key={i} 
+                    sale={sale} 
+                    labelKeyObjectArray={itemsToDisplay}
+                    headerObject = {header} />;
         })}
       </div>
     </Section>

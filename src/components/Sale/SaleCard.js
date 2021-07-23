@@ -8,49 +8,33 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import styles from './SaleCard.module.scss';
+import SaleCardItem from './SaleCardItem';
 
 export default function SaleCard(props) {
-  const { sale } = props;
+  const { sale,labelKeyObjectArray, headerObject } = props;
 
   return (
     <Card
       onClick={() => {
-        alert(`Client ${sale.customer.firstName} ${sale.customer.lastName}`);
+        alert(`Orden de venta ${sale[headerObject.key]}`);
       }}
     >
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            N° {sale.orderNumber}
+            {headerObject.label} {sale[headerObject.key]}
           </Typography>
           <Divider />
           <Typography variant="body2" color="textSecondary" component="div">
-            <div className={styles.CardItems}>
-              <label>Cliente</label>
-              <p>
-                {sale.customer.firstName} {sale.customer.lastName}
-              </p>
-            </div>
-            <div className={styles.CardItems}>
-              <label>CUIT/CUIL</label>
-              <p>{sale.customer.cuitCuil}</p>
-            </div>
-            <div className={styles.CardItems}>
-              <label>Localidad</label>
-              <p>{sale.customer.region}</p>
-            </div>
-            <div className={styles.CardItems}>
-              <label>Fecha de Entrega</label>
-              <p>{sale.deliveryDate ?? 'Sin Acordar'}</p>
-            </div>
-            <div className={styles.CardItems}>
-              <label>Estado</label>
-              <p>{sale.status}</p>
-            </div>
-            <div className={styles.CardItems}>
-              <label>Monto</label>
-              <p>${sale.amount}</p>
-            </div>
+            {
+            labelKeyObjectArray.map((element,i) => {
+              return <SaleCardItem
+                key={i}
+                className={styles.CardItems}
+                label={element.label}
+                text={sale[element.key]}
+                />
+            })}
           </Typography>
         </CardContent>
       </CardActionArea>

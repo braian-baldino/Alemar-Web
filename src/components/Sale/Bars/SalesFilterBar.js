@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
@@ -25,10 +25,10 @@ const SalesFilterBar = props => {
 
   const useStyles = makeStyles(theme => ({
     formControl: {
-      margin: theme.spacing(1),
-      minWidth: 200,
+      margin: theme.spacing(2),
+      minWidth: 180
     },
-    textField: { minWidth: 300 },
+    textField: { minWidth: 250 },
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
@@ -36,14 +36,10 @@ const SalesFilterBar = props => {
 
   const classes = useStyles();
 
-  const [regionValue, setRegionValue] = React.useState('all');
-  const [statusValue, setStatusValue] = React.useState('all');
-  const [selectedCreationDate, setSelectedCreationDate] = React.useState(
-    new Date()
-  );
-  const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState(
-    new Date()
-  );
+  const [regionValue, setRegionValue] = useState('all');
+  const [statusValue, setStatusValue] = useState('all');
+  const [selectedCreationDate, setSelectedCreationDate] = useState(null);
+  const [selectedDeliveryDate, setSelectedDeliveryDate] = useState(null);
 
   const handlerRegionDropdownChange = event => {
     setRegionValue(event.target.value);
@@ -84,8 +80,6 @@ const SalesFilterBar = props => {
             <MenuItem value="st">Santa Teresita</MenuItem>
             <MenuItem value="mdt">Mar del Tuyu</MenuItem>
           </Select>
-        </FormControl>
-        <FormControl className={classes.formControl}>
           <InputLabel id="status">Estado</InputLabel>
           <Select
             labelId="status"
@@ -101,6 +95,9 @@ const SalesFilterBar = props => {
             <MenuItem value="5">Entregado</MenuItem>
           </Select>
         </FormControl>
+        {/* <FormControl className={classes.formControl}>
+          
+        </FormControl> */}
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Grid container justify="space-evenly">
             <KeyboardDatePicker

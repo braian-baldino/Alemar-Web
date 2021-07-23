@@ -3,7 +3,7 @@
 
 .FilterBar {
   @include flexRowAround;
-  @include whiteCenteredBox(95%);
+  @include whiteCenteredBox(85%);
 
   margin-top: 2%;
   margin-bottom: 1%;

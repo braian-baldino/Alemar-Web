@@ -4,3 +4,10 @@
 .AddCustomerIcon {
   @include icon($primaryPurple, $secondaryPurple, 30px);
 }
+
+.DetailsTable{
+  background-color: #eeededdc;
+  border-radius: 5px;
+  border: 1px double $primaryGreen;
+  box-sizing: border-box;
+}

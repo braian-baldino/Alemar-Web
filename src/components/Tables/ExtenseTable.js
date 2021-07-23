@@ -29,7 +29,7 @@ const useInnerSytles = makeStyles({
   },
   details: {
     textAlign: 'center',
-    padding: '25px',
+    padding: '25px'
   },
 });
 
@@ -72,17 +72,17 @@ function Row(props) {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0}} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="h6" gutterBottom component="div">
                 Detalles
               </Typography>
-              <Table size="small" aria-label="purchases">
+              <Table className={styles.DetailsTable} size="small" aria-label="purchases">
                 <TableHead>
-                  <TableRow>
+                  <TableRow >
                     {detailsHeaders.map((header, i) => (
-                      <TableCell className={classes.row} key={i + header}>
+                      <TableCell  className={classes.row} key={i + header}>
                         {header}
                       </TableCell>
                     ))}
@@ -91,7 +91,7 @@ function Row(props) {
                 <TableBody>
                   {dataElement['details'].map((element, i) => (
                     <TableRow
-                      className={classes.details}
+                      className={styles.details}
                       key={i + element['id']}
                     >
                       {detailsKeys.map((key, i) => {
@@ -119,7 +119,7 @@ function Row(props) {
 export default function ExtenseTable(props) {
   const { mainHeaders, mapData, tableData } = props;
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const classes = useInnerSytles();
 
   const data = mapData(tableData);
@@ -159,7 +159,7 @@ export default function ExtenseTable(props) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={data.length}
         rowsPerPage={rowsPerPage}
