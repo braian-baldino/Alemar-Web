@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function MenuAppBar(props) {
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
+  const [auth, setAuth] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -47,45 +47,33 @@ export default function MenuAppBar(props) {
     setAnchorEl(null);
   };
 
+  let navItems = <NavItems links={props.links} />;
+
+  if (auth) {
+    navItems = <NavItems links={props.links} />;
+  }
+
   return (
     <div className={classes.root}>
-      {/* <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? 'Logout' : 'Login'}
-        />
-      </FormGroup> */}
-      <AppBar position="static">
+      <AppBar position='static'>
         <Toolbar className={classes.colorDefault}>
-          {/* <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          ></IconButton> */}
           <Logo />
-          <Typography variant="h6" className={classes.title}>
-            <NavItems links={props.links} />
+          <Typography variant='h6' className={classes.title}>
+            {navItems}
           </Typography>
           {auth && (
             <div>
               <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
+                aria-label='account of current user'
+                aria-controls='menu-appbar'
+                aria-haspopup='true'
                 onClick={handleMenu}
-                color="inherit"
+                color='inherit'
               >
                 <AccountCircle />
               </IconButton>
               <Menu
-                id="menu-appbar"
+                id='menu-appbar'
                 anchorEl={anchorEl}
                 anchorOrigin={{
                   vertical: 'top',
