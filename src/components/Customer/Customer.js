@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import classes from './Customer.module.scss';
-import mockCostumers from '../../dummy/Customers';
 import Section from '../Layout/Section';
 import CustomerFilterBar from './Bars/CustomerFilterBar';
 import ExtenseTable from '../Tables/ExtenseTable';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useOktaAuth } from '@okta/okta-react';
+import axios from './../../services/customerService';
 
 const tableMainHeaders = [
   'Cliente',
@@ -62,31 +62,19 @@ const mapCustomerToDataTable = customers => {
 
 const Customer = () => {
   const { authState, oktaAuth } = useOktaAuth();
-  const [userInfo, setUserInfo] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [filterCustomers, setFilterCustomers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
   const fetchCustomerHandler = useCallback(async () => {
-    console.log('API call to /api/costumer');
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('https://localhost:5000/api/customer', {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authState.accessToken.accessToken}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-
-      const data = await response.json();
+      axios.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${authState.accessToken.accessToken}`;
+      const data = await (await axios.get()).data;
       setCustomers(data);
       setFilterCustomers(data);
     } catch (error) {
@@ -130,16 +118,7 @@ const Customer = () => {
   };
 
   useEffect(() => {
-    if (!authState || !authState.isAuthenticated) {
-      // When user isn't authenticated, forget any user info
-      setUserInfo(null);
-    } else {
-      oktaAuth.getUser().then(info => {
-        setUserInfo(info);
-      });
-    }
     fetchCustomerHandler();
-    console.log(authState.accessToken.accessToken);
   }, [fetchCustomerHandler]);
 
   return (
