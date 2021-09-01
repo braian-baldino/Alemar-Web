@@ -5,6 +5,10 @@ import NavBar from '../UI/NavBar';
 const Nav = () => {
   const { authState, oktaAuth } = useOktaAuth();
 
+  const logout = async () => {
+    await oktaAuth.signOut();
+  };
+
   const navLinks =
     authState && authState.isAuthenticated
       ? [
@@ -17,7 +21,7 @@ const Nav = () => {
 
   return (
     <nav>
-      <NavBar links={navLinks} />
+      <NavBar logout={logout} links={navLinks} />
     </nav>
   );
 };
