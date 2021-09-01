@@ -1,5 +1,5 @@
 import './App.css';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { Security } from '@okta/okta-react';
@@ -17,12 +17,7 @@ function App() {
   };
 
   return (
-    // <Fragment>
-    //   <Layout></Layout>
-    //   <RouterLinks />
-    // </Fragment>
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
-      {console.log(oktaAuth)}
       <Layout></Layout>
       <RouterLinks />
     </Security>
