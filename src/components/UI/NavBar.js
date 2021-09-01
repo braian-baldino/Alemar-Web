@@ -27,13 +27,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function NavBar(props) {
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
-  const handleChange = event => {
-    setAuth(event.target.checked);
-  };
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget);
@@ -43,11 +38,7 @@ export default function NavBar(props) {
     setAnchorEl(null);
   };
 
-  let navItems = <NavItems links={props.links} />;
-
-  if (auth) {
-    navItems = <NavItems links={props.links} />;
-  }
+  const navItems = <NavItems links={props.links} />;
 
   return (
     <div className={classes.root}>
@@ -57,37 +48,34 @@ export default function NavBar(props) {
           <Typography variant='h6' className={classes.title}>
             {navItems}
           </Typography>
-          {auth && (
-            <div>
-              <IconButton
-                aria-label='account of current user'
-                aria-controls='menu-appbar'
-                aria-haspopup='true'
-                onClick={handleMenu}
-                color='inherit'
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id='menu-appbar'
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu>
-            </div>
-          )}
+          <div>
+            <IconButton
+              aria-label='account of current user'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
+              onClick={handleMenu}
+              color='inherit'
+            >
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id='menu-appbar'
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={props.logout}>Cerrar Sesion</MenuItem>
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
     </div>
