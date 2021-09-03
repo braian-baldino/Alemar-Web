@@ -1,6 +1,7 @@
 import React from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import NavBar from '../UI/NavBar';
+import NavBar2 from '../UI/NavBar2';
 
 const Nav = () => {
   const { authState, oktaAuth } = useOktaAuth();
@@ -21,7 +22,8 @@ const Nav = () => {
 
   return (
     <nav>
-      <NavBar logout={logout} links={navLinks} />
+      {/* <NavBar logout={logout} links={navLinks} /> */}
+      <NavBar2 links={navLinks} />
     </nav>
   );
 };
