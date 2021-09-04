@@ -1,5 +1,5 @@
-@import '../../utilities/colors.module.scss';
-@import '../../utilities/mixins.module.scss';
+@import '../../../utilities/colors.module.scss';
+@import '../../../utilities/mixins.module.scss';
 
 .NavBar {
   display: flex;
@@ -21,4 +21,3 @@
   box-sizing: border-box;
   @include links($white);
 }
-

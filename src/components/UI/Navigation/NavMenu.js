@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import DehazeIcon from '@material-ui/icons/Dehaze';
 
-export default function SimpleMenu() {
+export default function NavMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = event => {
@@ -42,7 +42,7 @@ export default function SimpleMenu() {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>Configuracion</MenuItem>
-        <MenuItem onClick={handleClose}>Cerrar Sesion</MenuItem>
+        <MenuItem onClick={props.logout}>Cerrar Sesion</MenuItem>
       </Menu>
     </div>
   );
