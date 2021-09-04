@@ -7,3 +7,13 @@ $secondaryPink: #f2bdd6;
 $white: #ffff;
 $red: #d50000;
 $lightRed: #df3030;
+
+$otherPurple: #6D32B2;
+$otherPurpleLight: #AB61FF;
+$otherGreen: #39CC64;
+$otherGreenDarker: #3BB25E;
+
+:export{
+   primary: $otherPurple;
+   secondary: $otherGreen; 
+}

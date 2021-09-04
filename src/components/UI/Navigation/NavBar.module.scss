@@ -1,0 +1,23 @@
+@import '../../../utilities/colors.module.scss';
+@import '../../../utilities/mixins.module.scss';
+
+.NavBar {
+  display: flex;
+  height: 70px;
+  background-color: rgb(19, 19, 19);
+}
+
+.NavBar ul {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  width: 100%;
+  list-style: none;
+}
+
+.NavBar li {
+  margin-right: 10px;
+  margin-left: 10px;
+  box-sizing: border-box;
+  @include links($white);
+}

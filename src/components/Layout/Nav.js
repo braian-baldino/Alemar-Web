@@ -1,6 +1,6 @@
 import React from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import NavBar from '../UI/NavBar';
+import NavBar from '../UI/Navigation/NavBar';
 
 const Nav = () => {
   const { authState, oktaAuth } = useOktaAuth();
@@ -12,10 +12,10 @@ const Nav = () => {
   const navLinks =
     authState && authState.isAuthenticated
       ? [
-          { path: '/home', text: 'Home' },
-          { path: '/clientes', text: 'Clientes' },
           { path: '/ventas', text: 'Ordenes' },
           { path: '/productos', text: 'Productos' },
+          { path: '/clientes', text: 'Clientes' },
+          { path: '/home', text: 'Home' },
         ]
       : [{ path: '/', text: 'Login' }];
 
