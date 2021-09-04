@@ -16,8 +16,9 @@
 }
 
 .NavBar li {
-  margin-right: 20px;
-  margin-left: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
   box-sizing: border-box;
   @include links($white);
 }
+
