@@ -37,11 +37,11 @@ const DolarNavItem = props => {
 
   useEffect(() => {
     getDolarValue();
-  }, [dolarBuyValue, dolarSaleValue]);
+  }, []);
 
   return (
     <MuiThemeProvider theme={theme}>
-      <div className={props.className}>
+      <div className={props.className} onClick={getDolarValue}>
         {!isLoading && (
           <React.Fragment>
             <p>C: {dolarBuyValue}</p>
