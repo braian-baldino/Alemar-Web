@@ -4,7 +4,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import DehazeIcon from '@material-ui/icons/Dehaze';
-import colors from './../../../utilities/colors.module.scss';
+import styles from './NavMenu.module.scss';
 
 export default function NavMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -25,10 +25,7 @@ export default function NavMenu(props) {
         onClick={handleClick}
       >
         <IconButton
-          style={{
-            backgroundColor: colors.white,
-            color: colors.primary,
-          }}
+          className={styles.IconButton}
           aria-label='account of current user'
           aria-controls='menu-appbar'
           aria-haspopup='true'
