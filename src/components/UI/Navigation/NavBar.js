@@ -1,4 +1,5 @@
 import React from 'react';
+import DolarNavItem from '../DolarNavItem';
 import styles from './NavBar.module.scss';
 import NavItems from './NavItems';
 import NavMenu from './NavMenu';
@@ -15,6 +16,7 @@ const NavBar = props => {
 
   return (
     <div className={styles.NavBar}>
+      <DolarNavItem className={styles.DolarSection} />
       <ul>
         <NavMenu logout={props.logout} />
         {navLinks}
