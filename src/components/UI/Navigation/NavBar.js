@@ -16,9 +16,7 @@ const NavBar = props => {
 
   return (
     <div className={styles.NavBar}>
-      <div className={styles.DolarSection}>
-        <DolarNavItem />
-      </div>
+      <DolarNavItem className={styles.DolarSection} />
       <ul>
         <NavMenu logout={props.logout} />
         {navLinks}

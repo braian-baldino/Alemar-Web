@@ -13,7 +13,7 @@ const theme = createMuiTheme({
   },
 });
 
-const DolarNavItem = () => {
+const DolarNavItem = props => {
   const { authState, oktaAuth } = useOktaAuth();
   const [isLoading, setIsLoading] = useState();
   const [dolarBuyValue, setDolarBuyValue] = useState();
@@ -41,17 +41,19 @@ const DolarNavItem = () => {
 
   return (
     <MuiThemeProvider theme={theme}>
-      {!isLoading && (
-        <React.Fragment>
-          <p>C: {dolarBuyValue}</p>
-          <Divider
-            style={{ backgroundColor: colors.secondary }}
-            orientation='vertical'
-          />
-          <p>V: {dolarSaleValue}</p>
-        </React.Fragment>
-      )}
-      {isLoading && <CircularProgress size={25} color='primary' />}
+      <div className={props.className}>
+        {!isLoading && (
+          <React.Fragment>
+            <p>C: {dolarBuyValue}</p>
+            <Divider
+              style={{ backgroundColor: colors.secondary }}
+              orientation='vertical'
+            />
+            <p>V: {dolarSaleValue}</p>
+          </React.Fragment>
+        )}
+        {isLoading && <CircularProgress size={25} color='primary' />}
+      </div>
     </MuiThemeProvider>
   );
 };
