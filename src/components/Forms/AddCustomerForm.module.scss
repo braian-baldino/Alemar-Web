@@ -1,0 +1,26 @@
+.Form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.FormGrid {
+  display: grid;
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  grid-gap: 2%;
+}
+
+.ActionButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 5%;
+}

@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import classes from './Customer.module.scss';
 import Section from '../Layout/Section';
 import CustomerFilterBar from './Bars/CustomerFilterBar';
 import ExtenseTable from '../Tables/ExtenseTable';
+import Modal from './../UI/Modal';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useOktaAuth } from '@okta/okta-react';
-import axios from './../../services/customerService';
+import customerService from './../../services/customerService';
+import dropDownService from './../../services/dropdownService';
+import AddCustomerForm from '../Forms/AddCustomerForm';
+import DropDownContext from '../../store/dropDown-context';
 
 const tableMainHeaders = [
   'Cliente',
@@ -62,19 +66,21 @@ const mapCustomerToDataTable = customers => {
 
 const Customer = () => {
   const { authState, oktaAuth } = useOktaAuth();
+  const ctx = useContext(DropDownContext);
+  const [showAddForm, setShowAddForm] = useState(false);
   const [customers, setCustomers] = useState([]);
   const [filterCustomers, setFilterCustomers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const fetchCustomerHandler = useCallback(async () => {
+  const getCustomers = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      axios.defaults.headers.common[
+      customerService.defaults.headers.common[
         'Authorization'
       ] = `Bearer ${authState.accessToken.accessToken}`;
-      const data = await (await axios.get()).data;
+      const data = await (await customerService.get()).data;
       setCustomers(data);
       setFilterCustomers(data);
     } catch (error) {
@@ -82,6 +88,18 @@ const Customer = () => {
     }
 
     setIsLoading(false);
+  }, []);
+
+  const getRegions = useCallback(async () => {
+    try {
+      dropDownService.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${authState.accessToken.accessToken}`;
+      const data = await (await dropDownService.get('/regions')).data;
+      ctx.regions = data;
+    } catch (error) {
+      setError(error.message);
+    }
   }, []);
 
   const onFilterTable = event => {
@@ -117,9 +135,27 @@ const Customer = () => {
     setFilterCustomers(updatedCostumers);
   };
 
+  const onAddHandler = () => {
+    setShowAddForm(true);
+  };
+
+  const onCloseFormHandler = () => {
+    setShowAddForm(false);
+  };
+
+  const onAddCustomerHandler = async customer => {
+    try {
+      console.log('onAdd');
+    } catch (error) {
+      setError(error.message);
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    fetchCustomerHandler();
-  }, [fetchCustomerHandler]);
+    getCustomers();
+    getRegions();
+  }, [getCustomers, getRegions]);
 
   return (
     <Section>
@@ -134,11 +170,20 @@ const Customer = () => {
             tableData={filterCustomers}
             mapData={mapCustomerToDataTable}
             onDelete={onDeleteHandler}
+            onAdd={onAddHandler}
           />
         </div>
       )}
       {!isLoading && error && <p>{error}</p>}
       {isLoading && <CircularProgress />}
+      {showAddForm ? (
+        <Modal onClose={onCloseFormHandler}>
+          <AddCustomerForm
+            onAdd={onAddCustomerHandler}
+            onClose={onCloseFormHandler}
+          />
+        </Modal>
+      ) : null}
     </Section>
   );
 };
