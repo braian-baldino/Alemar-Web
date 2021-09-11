@@ -33,36 +33,13 @@ const mainKeys = ['fullName', 'dni', 'telephone', 'region'];
 
 const detailsKeys = [
   'cuitCuil',
-  'bussinessName',
+  'businessName',
   'bankAccount',
   'email',
   'address',
   'positiveBalance',
   'negativeBalance',
 ];
-
-const mapCustomerToDataTable = customers => {
-  return customers.map(customer => {
-    return {
-      id: customer.id,
-      fullName: `${customer.firstName} ${customer.lastName}`,
-      dni: customer.dni,
-      telephone: customer.telephone,
-      region: customer.region,
-      details: [
-        {
-          cuitCuil: customer.cuitCuil,
-          bussinessName: customer.bussinessName,
-          bankAccount: customer.bankAccount,
-          email: customer.email,
-          address: customer.address,
-          positiveBalance: customer.positiveBalance,
-          negativeBalance: customer.negativeBalance,
-        },
-      ],
-    };
-  });
-};
 
 const Customer = () => {
   const { authState, oktaAuth } = useOktaAuth();
@@ -101,6 +78,34 @@ const Customer = () => {
       setError(error.message);
     }
   }, []);
+
+  const mapRegion = regionValue => {
+    const region = ctx.regions.find(region => region.value === regionValue);
+    return region.name ? region.name : '-';
+  };
+
+  const mapCustomerToDataTable = customers => {
+    return customers.map(customer => {
+      return {
+        id: customer.id,
+        fullName: `${customer.firstName} ${customer.lastName}`,
+        dni: customer.dni,
+        telephone: customer.telephone,
+        region: mapRegion(customer.region),
+        details: [
+          {
+            cuitCuil: customer.cuitCuil,
+            businessName: customer.businessName,
+            bankAccount: customer.bankAccount,
+            email: customer.email,
+            address: customer.address,
+            positiveBalance: customer.positiveBalance,
+            negativeBalance: customer.negativeBalance,
+          },
+        ],
+      };
+    });
+  };
 
   const onFilterTable = event => {
     const value = event.target.value.toLocaleLowerCase();
