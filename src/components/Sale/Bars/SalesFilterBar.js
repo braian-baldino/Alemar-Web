@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
@@ -14,19 +14,20 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import styles from './SalesFilterBar.module.scss';
+import colors from './../../../utilities/colors.module.scss';
 
 const SalesFilterBar = props => {
   const theme = createMuiTheme({
     palette: {
-      primary: { main: '#53008c' },
-      secondary: { main: '#04bf9d' },
+      primary: { main: colors.primary },
+      secondary: { main: colors.secondary },
     },
   });
 
   const useStyles = makeStyles(theme => ({
     formControl: {
       margin: theme.spacing(2),
-      minWidth: 180
+      minWidth: 180,
     },
     textField: { minWidth: 250 },
     selectEmpty: {
@@ -62,49 +63,49 @@ const SalesFilterBar = props => {
       <MuiThemeProvider theme={theme}>
         <TextField
           className={classes.textField}
-          id="outlined-search"
-          label="Buscar..."
-          type="search"
-          variant="outlined"
+          id='outlined-search'
+          label='Buscar...'
+          type='search'
+          variant='outlined'
           onChange={props.onFilter}
         />
         <FormControl className={classes.formControl}>
-          <InputLabel id="region">Localidad</InputLabel>
+          <InputLabel id='region'>Localidad</InputLabel>
           <Select
-            labelId="region"
-            id="region-select"
+            labelId='region'
+            id='region-select'
             value={regionValue}
             onChange={handlerRegionDropdownChange}
           >
-            <MenuItem value="all">Todos</MenuItem>
-            <MenuItem value="st">Santa Teresita</MenuItem>
-            <MenuItem value="mdt">Mar del Tuyu</MenuItem>
+            <MenuItem value='all'>Todos</MenuItem>
+            <MenuItem value='st'>Santa Teresita</MenuItem>
+            <MenuItem value='mdt'>Mar del Tuyu</MenuItem>
           </Select>
-          <InputLabel id="status">Estado</InputLabel>
+          <InputLabel id='status'>Estado</InputLabel>
           <Select
-            labelId="status"
-            id="status-select"
+            labelId='status'
+            id='status-select'
             value={statusValue}
             onChange={handlerStatusDropdownChange}
           >
-            <MenuItem value="all">Todos</MenuItem>
-            <MenuItem value="1">En Proceso</MenuItem>
-            <MenuItem value="2">Finalizado</MenuItem>
-            <MenuItem value="3">Cancelado</MenuItem>
-            <MenuItem value="4">Pendiente</MenuItem>
-            <MenuItem value="5">Entregado</MenuItem>
+            <MenuItem value='all'>Todos</MenuItem>
+            <MenuItem value='1'>En Proceso</MenuItem>
+            <MenuItem value='2'>Finalizado</MenuItem>
+            <MenuItem value='3'>Cancelado</MenuItem>
+            <MenuItem value='4'>Pendiente</MenuItem>
+            <MenuItem value='5'>Entregado</MenuItem>
           </Select>
         </FormControl>
         {/* <FormControl className={classes.formControl}>
           
         </FormControl> */}
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Grid container justify="space-evenly">
+          <Grid container justify='space-evenly'>
             <KeyboardDatePicker
-              margin="normal"
-              id="creationDate-picker"
-              label="Fecha de Emision"
-              format="MM/dd/yyyy"
+              margin='normal'
+              id='creationDate-picker'
+              label='Fecha de Emision'
+              format='MM/dd/yyyy'
               value={selectedCreationDate}
               onChange={handleCreationDateChange}
               KeyboardButtonProps={{
@@ -112,10 +113,10 @@ const SalesFilterBar = props => {
               }}
             />
             <KeyboardDatePicker
-              margin="normal"
-              id="deliveryDate-picker"
-              label="Fecha de Entrega"
-              format="MM/dd/yyyy"
+              margin='normal'
+              id='deliveryDate-picker'
+              label='Fecha de Entrega'
+              format='MM/dd/yyyy'
               value={selectedDeliveryDate}
               onChange={handleDeliveryDateChange}
               KeyboardButtonProps={{

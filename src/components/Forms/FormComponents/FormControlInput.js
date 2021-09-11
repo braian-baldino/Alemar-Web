@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import colors from './../../../utilities/colors.module.scss';
@@ -22,11 +22,12 @@ const useStyles = makeStyles(theme => ({
 
 const FormControlInput = props => {
   const { id, label, variant } = props;
-  const classes = useStyles();
+  const [valid, setValid] = useState(true);
+  const innerClasses = useStyles();
 
   return (
     <MuiThemeProvider theme={theme}>
-      <div className={classes.root}>
+      <div className={innerClasses.root}>
         <TextField id={id} label={label} variant={variant} {...props} />
       </div>
     </MuiThemeProvider>

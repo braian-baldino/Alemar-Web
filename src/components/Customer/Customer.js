@@ -143,13 +143,8 @@ const Customer = () => {
     setShowAddForm(false);
   };
 
-  const onAddCustomerHandler = async customer => {
-    try {
-      console.log('onAdd');
-    } catch (error) {
-      setError(error.message);
-      console.log(error);
-    }
+  const handleUpdate = () => {
+    getCustomers();
   };
 
   useEffect(() => {
@@ -159,6 +154,7 @@ const Customer = () => {
 
   return (
     <Section>
+      {console.log('renderizo customers')}
       <CustomerFilterBar onFilter={onFilterTable} />
       {!isLoading && (
         <div className={classes.CustomerTable}>
@@ -179,7 +175,7 @@ const Customer = () => {
       {showAddForm ? (
         <Modal onClose={onCloseFormHandler}>
           <AddCustomerForm
-            onAdd={onAddCustomerHandler}
+            onUpdateParent={handleUpdate}
             onClose={onCloseFormHandler}
           />
         </Modal>
