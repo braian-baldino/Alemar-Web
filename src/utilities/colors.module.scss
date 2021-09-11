@@ -1,19 +1,29 @@
-$primaryPurple: #53008c;
-$secondaryPurple: #59194f;
-$primaryGreen: #04bf9d;
-$secondaryGreen: #08a689;
-$primaryPink: #f288c2;
-$secondaryPink: #f2bdd6;
-$white: #ffff;
-$red: #d50000;
-$lightRed: #df3030;
+//PALETTE 1
+$palette1Purple: #6d32b2;
+$palette1LightPurple: #ab61ff;
+$palette1Green: #08a689;
+$palette1LightGreen: #04bf9d;
 
-$otherPurple: #6d32b2;
-$otherPurpleLight: #ab61ff;
-$otherGreen: #39cc64;
-$otherGreenDarker: #3bb25e;
+//PALETE 2
+$palette2Purple: #a468b8;
+$palette2Salmon: #fc7869;
+$palette2Orange: #f5ae52;
+
+//CONTRAST
+$pink: #f288c2;
+$lightPink: #f2bdd6;
+
+//ALTERNATIVES
+$otherPurple: #53008c;
+
+//Others
+$white: #ffff;
+$red: #df3030;
+$lightRed: #d50000;
 
 :export {
-  primary: $otherPurple;
-  secondary: $secondaryGreen;
+  primary: $palette2Purple;
+  secondary: $palette1Green;
+  red: $red;
+  white: $white;
 }
