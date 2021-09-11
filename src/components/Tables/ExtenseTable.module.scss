@@ -2,12 +2,12 @@
 @import '../../utilities/colors.module.scss';
 
 .AddCustomerIcon {
-  @include icon($primaryPurple, $secondaryPurple, 30px);
+  @include icon($palette2Purple, $palette1LightPurple, 30px);
 }
 
-.DetailsTable{
+.DetailsTable {
   background-color: #eeededdc;
   border-radius: 5px;
-  border: 1px double $primaryGreen;
+  border: 1px double $palette1Green;
   box-sizing: border-box;
 }

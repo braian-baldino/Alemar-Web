@@ -29,7 +29,7 @@ const useInnerSytles = makeStyles({
   },
   details: {
     textAlign: 'center',
-    padding: '25px'
+    padding: '25px',
   },
 });
 
@@ -50,8 +50,8 @@ function Row(props) {
       <TableRow className={classes.root}>
         <TableCell>
           <IconButton
-            aria-label="expand row"
-            size="small"
+            aria-label='expand row'
+            size='small'
             onClick={() => setOpen(!open)}
           >
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -72,17 +72,21 @@ function Row(props) {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0}} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout='auto' unmountOnExit>
             <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
+              <Typography variant='h6' gutterBottom component='div'>
                 Detalles
               </Typography>
-              <Table className={styles.DetailsTable} size="small" aria-label="purchases">
+              <Table
+                className={styles.DetailsTable}
+                size='small'
+                aria-label='purchases'
+              >
                 <TableHead>
-                  <TableRow >
+                  <TableRow>
                     {detailsHeaders.map((header, i) => (
-                      <TableCell  className={classes.row} key={i + header}>
+                      <TableCell className={classes.row} key={i + header}>
                         {header}
                       </TableCell>
                     ))}
@@ -136,11 +140,15 @@ export default function ExtenseTable(props) {
   return (
     <Paper>
       <TableContainer className={props.className} component={Paper}>
-        <Table aria-label="collapsible table">
+        <Table aria-label='collapsible table'>
           <TableHead>
             <TableRow>
               <TableCell>
-                <AddUsercon className={styles.AddCustomerIcon} />
+                <AddUsercon
+                  className={styles.AddCustomerIcon}
+                  onClick={props.onAdd}
+                  onClose={props.onClose}
+                />
               </TableCell>
               {mainHeaders.map((header, i) => (
                 <TableCell className={classes.row} key={i + header}>
@@ -160,7 +168,7 @@ export default function ExtenseTable(props) {
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
-        component="div"
+        component='div'
         count={data.length}
         rowsPerPage={rowsPerPage}
         page={page}
