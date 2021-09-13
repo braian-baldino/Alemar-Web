@@ -8,7 +8,7 @@ import DropDownContext from '../../store/dropDown-context';
 import styles from './AddCustomerForm.module.scss';
 
 const AddCustomerForm = props => {
-  const { onClose, onUpdateParent } = props;
+  const { onClose, onAddCustomer } = props;
   const { authState, oktaAuth } = useOktaAuth();
   const nameRef = useRef();
   const lastNameRef = useRef();
@@ -135,7 +135,7 @@ const AddCustomerForm = props => {
         lastName: lastNameRef.current.value,
         dni: dniRef.current.value,
         address: addressRef.current.value,
-        telephone: telephoneRef.current.value,
+        phoneNumber: telephoneRef.current.value,
         cuitCuil: cuitCuilRef.current.value,
         bankAccount: bankAccountRef.current.value,
         businessName: businessNameRef.current.value,
@@ -150,10 +150,12 @@ const AddCustomerForm = props => {
         return;
       }
 
-      const data = await (await customerService.post('/', customer)).data;
+      const newCustomer = await (
+        await customerService.post('/', customer)
+      ).data;
 
-      if (data) {
-        onUpdateParent();
+      if (newCustomer) {
+        onAddCustomer(newCustomer);
         onClose();
       }
     } catch (error) {
