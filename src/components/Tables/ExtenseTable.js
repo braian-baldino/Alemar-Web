@@ -146,7 +146,7 @@ export default function ExtenseTable(props) {
               <TableCell>
                 <AddUsercon
                   className={styles.AddCustomerIcon}
-                  onClick={props.onAdd}
+                  onClick={props.onAddButton}
                   onClose={props.onClose}
                 />
               </TableCell>

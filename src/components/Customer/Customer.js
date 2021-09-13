@@ -29,7 +29,7 @@ const detailsTableHeaders = [
   'Saldo Deudor',
 ];
 
-const mainKeys = ['fullName', 'dni', 'telephone', 'region'];
+const mainKeys = ['fullName', 'dni', 'phoneNumber', 'region'];
 
 const detailsKeys = [
   'cuitCuil',
@@ -90,7 +90,7 @@ const Customer = () => {
         id: customer.id,
         fullName: `${customer.firstName} ${customer.lastName}`,
         dni: customer.dni,
-        telephone: customer.telephone,
+        phoneNumber: customer.phoneNumber,
         region: mapRegion(customer.region),
         details: [
           {
@@ -120,7 +120,7 @@ const Customer = () => {
           customer.firstName.toLocaleLowerCase().includes(value) ||
           customer.lastName.toLocaleLowerCase().includes(value) ||
           customer.dni.includes(value) ||
-          customer.telephone?.includes(value) ||
+          customer.phoneNumber?.includes(value) ||
           customer.email?.toLocaleLowerCase().includes(value) ||
           customer.address?.toLocaleLowerCase().includes(value) ||
           customer.bankAccount?.includes(value) ||
@@ -133,14 +133,27 @@ const Customer = () => {
     }
   };
 
-  const onDeleteHandler = id => {
-    const updatedCostumers = customers.filter(
-      customer => customer['id'] !== id
-    );
-    setFilterCustomers(updatedCostumers);
+  const onDeleteHandler = async id => {
+    const customer = customers.find(customer => customer.id === id);
+
+    try {
+      if (customer) {
+        customerService.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${authState.accessToken.accessToken}`;
+
+        await customerService.delete(`/${customer.id}`);
+
+        const newCustomers = customers.filter(customer => customer.id !== id);
+        setCustomers(newCustomers);
+        setFilterCustomers(newCustomers);
+      }
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
-  const onAddHandler = () => {
+  const openAddFormHandler = () => {
     setShowAddForm(true);
   };
 
@@ -148,8 +161,10 @@ const Customer = () => {
     setShowAddForm(false);
   };
 
-  const handleUpdate = () => {
-    getCustomers();
+  const onAddCustomerHandler = newCustomer => {
+    const newCustomers = [...customers, newCustomer];
+    setCustomers(newCustomers);
+    setFilterCustomers(newCustomers);
   };
 
   useEffect(() => {
@@ -159,7 +174,6 @@ const Customer = () => {
 
   return (
     <Section>
-      {console.log('renderizo customers')}
       <CustomerFilterBar onFilter={onFilterTable} />
       {!isLoading && (
         <div className={classes.CustomerTable}>
@@ -171,7 +185,7 @@ const Customer = () => {
             tableData={filterCustomers}
             mapData={mapCustomerToDataTable}
             onDelete={onDeleteHandler}
-            onAdd={onAddHandler}
+            onAddButton={openAddFormHandler}
           />
         </div>
       )}
@@ -180,7 +194,7 @@ const Customer = () => {
       {showAddForm ? (
         <Modal onClose={onCloseFormHandler}>
           <AddCustomerForm
-            onUpdateParent={handleUpdate}
+            onAddCustomer={onAddCustomerHandler}
             onClose={onCloseFormHandler}
           />
         </Modal>
