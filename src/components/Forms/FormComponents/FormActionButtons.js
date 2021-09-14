@@ -14,7 +14,7 @@ const theme = createMuiTheme({
 });
 
 const FormActionButtons = props => {
-  const { onAdd, onClose } = props;
+  const { onAccept, onClose } = props;
   return (
     <MuiThemeProvider theme={theme}>
       <div className={styles.Buttons}>
@@ -24,7 +24,7 @@ const FormActionButtons = props => {
             color: colors.white,
           }}
         >
-          <AddIcon fontSize='medium' onClick={onAdd} />
+          <AddIcon fontSize='medium' onClick={onAccept} />
         </IconButton>
         <IconButton
           style={{
