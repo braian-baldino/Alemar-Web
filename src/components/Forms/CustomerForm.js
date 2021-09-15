@@ -21,7 +21,9 @@ const CustomerForm = props => {
   const emailRef = useRef();
   const positiveBalRef = useRef();
   const negativeBalRef = useRef();
-  const [regionValue, setRegion] = useState();
+  const [regionValue, setRegion] = useState(
+    formMode === 'edit' ? customer.region : null
+  );
   const ctx = useContext(DropDownContext);
 
   const inputsForAdd = [
@@ -281,7 +283,7 @@ const CustomerForm = props => {
           label='Localidad'
           data={ctx.regions}
           valueHandler={regionValueSelect}
-          selectValue={formMode === 'edit' ? customer.region : null}
+          selectValue={regionValue}
         />
         {formMode === 'edit' &&
           inputsForEdit.map(input => {

@@ -170,13 +170,13 @@ const Customer = () => {
     setShowAddForm(false);
   };
 
-  const onAddCustomerHandler = newCustomer => {
+  const onAddCustomer = newCustomer => {
     const newCustomers = [...customers, newCustomer];
     setCustomers(newCustomers);
     setFilterCustomers(newCustomers);
   };
 
-  const onEditCustomerHandler = editedCustomer => {
+  const onEditCustomer = editedCustomer => {
     const newCustomers = customers.map(customer => {
       if (customer.id === editedCustomer.id) {
         return editedCustomer;
@@ -217,8 +217,8 @@ const Customer = () => {
           <CustomerForm
             formMode={formMode}
             customer={customerToEdit}
-            onAddCustomer={onAddCustomerHandler}
-            onEditCustomer={onEditCustomerHandler}
+            onAddCustomer={onAddCustomer}
+            onEditCustomer={onEditCustomer}
             onClose={onCloseFormHandler}
           />
         </Modal>
