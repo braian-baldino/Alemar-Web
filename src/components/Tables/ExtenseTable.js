@@ -39,7 +39,7 @@ function Row(props) {
     detailsHeaders,
     mainKeys,
     detailsKeys,
-    onEditHandler,
+    onEdit,
     onDelete,
   } = props;
   const [open, setOpen] = React.useState(false);
@@ -66,7 +66,7 @@ function Row(props) {
         })}
         <TableCell>
           <ActionTableIcons
-            onEdit={onEditHandler}
+            onEdit={() => onEdit(dataElement['id'])}
             onDelete={() => onDelete(dataElement['id'])}
           />
         </TableCell>

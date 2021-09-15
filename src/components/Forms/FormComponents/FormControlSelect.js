@@ -24,9 +24,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const FormControlSelect = props => {
-  const { id, label, data, valueHandler } = props;
+  const { id, label, data, valueHandler, selectValue } = props;
   const classes = useStyles();
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(selectValue != null ? selectValue : null);
 
   const handleChange = event => {
     setValue(event.target.value);

@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useOktaAuth } from '@okta/okta-react';
 import customerService from './../../services/customerService';
 import dropDownService from './../../services/dropdownService';
-import AddCustomerForm from '../Forms/AddCustomerForm';
+import CustomerForm from '../Forms/CustomerForm';
 import DropDownContext from '../../store/dropDown-context';
 
 const tableMainHeaders = [
@@ -44,8 +44,10 @@ const detailsKeys = [
 const Customer = () => {
   const { authState, oktaAuth } = useOktaAuth();
   const ctx = useContext(DropDownContext);
+  const [formMode, setFormMode] = useState();
   const [showAddForm, setShowAddForm] = useState(false);
   const [customers, setCustomers] = useState([]);
+  const [customerToEdit, setCustomerToEdit] = useState({});
   const [filterCustomers, setFilterCustomers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
@@ -153,7 +155,14 @@ const Customer = () => {
     }
   };
 
+  const onEditHandler = id => {
+    setFormMode('edit');
+    setCustomerToEdit(customers.find(customer => customer.id === id));
+    setShowAddForm(true);
+  };
+
   const openAddFormHandler = () => {
+    setFormMode('add');
     setShowAddForm(true);
   };
 
@@ -161,8 +170,19 @@ const Customer = () => {
     setShowAddForm(false);
   };
 
-  const onAddCustomerHandler = newCustomer => {
+  const onAddCustomer = newCustomer => {
     const newCustomers = [...customers, newCustomer];
+    setCustomers(newCustomers);
+    setFilterCustomers(newCustomers);
+  };
+
+  const onEditCustomer = editedCustomer => {
+    const newCustomers = customers.map(customer => {
+      if (customer.id === editedCustomer.id) {
+        return editedCustomer;
+      }
+      return customer;
+    });
     setCustomers(newCustomers);
     setFilterCustomers(newCustomers);
   };
@@ -184,6 +204,7 @@ const Customer = () => {
             detailsKeys={detailsKeys}
             tableData={filterCustomers}
             mapData={mapCustomerToDataTable}
+            onEdit={onEditHandler}
             onDelete={onDeleteHandler}
             onAddButton={openAddFormHandler}
           />
@@ -193,8 +214,11 @@ const Customer = () => {
       {isLoading && <CircularProgress />}
       {showAddForm ? (
         <Modal onClose={onCloseFormHandler}>
-          <AddCustomerForm
-            onAddCustomer={onAddCustomerHandler}
+          <CustomerForm
+            formMode={formMode}
+            customer={customerToEdit}
+            onAddCustomer={onAddCustomer}
+            onEditCustomer={onEditCustomer}
             onClose={onCloseFormHandler}
           />
         </Modal>

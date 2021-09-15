@@ -1,17 +1,17 @@
 import React, { useState, useContext, useRef } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import customerService from './../../services/customerService';
+import customerService from '../../services/customerService';
 import FormControlInput from './FormComponents/FormControlInput';
 import FormControlSelect from './FormComponents/FormControlSelect';
 import FormActionButtons from './FormComponents/FormActionButtons';
 import DropDownContext from '../../store/dropDown-context';
-import styles from './AddCustomerForm.module.scss';
+import styles from './CustomerForm.module.scss';
 
-const AddCustomerForm = props => {
-  const { onClose, onAddCustomer } = props;
+const CustomerForm = props => {
+  const { formMode, onClose, customer, onAddCustomer, onEditCustomer } = props;
   const { authState, oktaAuth } = useOktaAuth();
   const nameRef = useRef();
-  const lastNameRef = useRef();
+  const lastNameRef = useRef('juan carlos');
   const dniRef = useRef();
   const addressRef = useRef();
   const telephoneRef = useRef();
@@ -21,10 +21,12 @@ const AddCustomerForm = props => {
   const emailRef = useRef();
   const positiveBalRef = useRef();
   const negativeBalRef = useRef();
-  const [regionValue, setRegion] = useState();
+  const [regionValue, setRegion] = useState(
+    formMode === 'edit' ? customer.region : null
+  );
   const ctx = useContext(DropDownContext);
 
-  const inputs = [
+  const inputsForAdd = [
     {
       id: 'firstName',
       variant: 'standard',
@@ -107,6 +109,82 @@ const AddCustomerForm = props => {
     },
   ];
 
+  const inputsForEdit = [
+    {
+      id: 'firstName',
+      variant: 'standard',
+      label: 'Nombre',
+      type: 'text',
+      inputRef: nameRef,
+      defaultValue: customer.firstName,
+    },
+    {
+      id: 'lastName',
+      variant: 'standard',
+      label: 'Apellido',
+      type: 'text',
+      inputRef: lastNameRef,
+      defaultValue: customer.lastName,
+    },
+    {
+      id: 'dni',
+      variant: 'standard',
+      label: 'DNI',
+      type: 'text',
+      inputRef: dniRef,
+      defaultValue: customer.dni,
+    },
+    {
+      id: 'telephone',
+      variant: 'standard',
+      label: 'Telefono',
+      type: 'telephone',
+      inputRef: telephoneRef,
+      defaultValue: customer.phoneNumber,
+    },
+    {
+      id: 'email',
+      variant: 'standard',
+      label: 'Email',
+      type: 'email',
+      inputRef: emailRef,
+      defaultValue: customer.email,
+    },
+    {
+      id: 'cuitCuil',
+      variant: 'standard',
+      label: 'CUIT / CUIL',
+      type: 'text',
+      inputRef: cuitCuilRef,
+      defaultValue: customer.cuitCuil,
+    },
+    {
+      id: 'bankAccount',
+      variant: 'standard',
+      label: 'CBU',
+      type: 'text',
+      inputRef: bankAccountRef,
+      defaultValue: customer.bankAccount,
+    },
+
+    {
+      id: 'businessName',
+      variant: 'standard',
+      label: 'Razon Social',
+      type: 'text',
+      inputRef: businessNameRef,
+      defaultValue: customer.businessName,
+    },
+    {
+      id: 'address',
+      variant: 'standard',
+      label: 'Direccion',
+      type: 'text',
+      inputRef: addressRef,
+      defaultValue: customer.address,
+    },
+  ];
+
   const validateCustomer = customer => {
     if (
       customer.firstName === '' ||
@@ -124,13 +202,13 @@ const AddCustomerForm = props => {
     setRegion(value);
   };
 
-  const onAddCustomerHandler = async customer => {
+  const onAddCustomerHandler = async () => {
     try {
       customerService.defaults.headers.common[
         'Authorization'
       ] = `Bearer ${authState.accessToken.accessToken}`;
 
-      const customer = {
+      const newCustomer = {
         firstName: nameRef.current.value,
         lastName: lastNameRef.current.value,
         dni: dniRef.current.value,
@@ -145,17 +223,51 @@ const AddCustomerForm = props => {
         region: regionValue,
       };
 
-      if (!validateCustomer(customer)) {
+      if (!validateCustomer(newCustomer)) {
         console.log('error');
         return;
       }
 
-      const newCustomer = await (
-        await customerService.post('/', customer)
-      ).data;
+      const result = await (await customerService.post('/', newCustomer)).data;
 
-      if (newCustomer) {
-        onAddCustomer(newCustomer);
+      if (result) {
+        onAddCustomer(result);
+        onClose();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onEditCustomerHandler = async () => {
+    try {
+      customerService.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${authState.accessToken.accessToken}`;
+
+      const editedCustomer = {
+        id: customer.id,
+        firstName: nameRef.current.value,
+        lastName: lastNameRef.current.value,
+        dni: dniRef.current.value,
+        address: addressRef.current.value,
+        phoneNumber: telephoneRef.current.value,
+        cuitCuil: cuitCuilRef.current.value,
+        bankAccount: bankAccountRef.current.value,
+        businessName: businessNameRef.current.value,
+        email: emailRef.current.value,
+        region: regionValue,
+      };
+
+      if (!validateCustomer(editedCustomer)) {
+        console.log('error');
+        return;
+      }
+
+      await customerService.put(`/${customer.id}`, editedCustomer);
+
+      if (editedCustomer) {
+        onEditCustomer(editedCustomer);
         onClose();
       }
     } catch (error) {
@@ -171,16 +283,27 @@ const AddCustomerForm = props => {
           label='Localidad'
           data={ctx.regions}
           valueHandler={regionValueSelect}
+          selectValue={regionValue}
         />
-        {inputs.map(input => {
-          return <FormControlInput key={input.id} {...input} />;
-        })}
+        {formMode === 'edit' &&
+          inputsForEdit.map(input => {
+            return <FormControlInput key={input.id} {...input} />;
+          })}
+        {formMode === 'add' &&
+          inputsForAdd.map(input => {
+            return <FormControlInput key={input.id} {...input} />;
+          })}
       </div>
       <div className={styles.ActionButtons}>
-        <FormActionButtons onAdd={onAddCustomerHandler} onClose={onClose} />
+        <FormActionButtons
+          onAccept={
+            formMode === 'add' ? onAddCustomerHandler : onEditCustomerHandler
+          }
+          onClose={onClose}
+        />
       </div>
     </form>
   );
 };
 
-export default AddCustomerForm;
+export default CustomerForm;
