@@ -2,11 +2,23 @@
 @import '../../utilities/colors.module.scss';
 
 .Delete {
-  @include icon($red, $lightRed, 30px);
+  @include icon($red, $lightRed, 25px);
+  cursor: pointer;
 }
 
 .Edit {
-  @include icon($palette1Purple, $palette1LightPurple, 30px);
+  @include icon($palette1Purple, $palette1LightPurple, 25px);
+  cursor: pointer;
+}
+
+.View {
+  @include icon($palette2Orange, $palette2Orange, 25px);
+  cursor: pointer;
+}
+
+.Currency {
+  @include icon($palette1Green, $palette1LightGreen, 25px);
+  cursor: pointer;
 }
 
 .ActionIcons {

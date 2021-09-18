@@ -7,6 +7,10 @@
   border-radius: 4px;
 }
 
+@mixin shadow() {
+  box-shadow: 2px 4px 30px 0px $shadow;
+}
+
 @mixin flexWhiteBox {
   background-color: white;
   display: flex;
