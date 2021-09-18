@@ -46,7 +46,7 @@ const CustomerBalanceForm = props => {
       };
 
       const editedCustomer = await (
-        await customerService.put('/', balances)
+        await customerService.put(`/balances/${customer.id}`, balances)
       ).data;
 
       if (editedCustomer) {

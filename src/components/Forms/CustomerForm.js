@@ -266,7 +266,7 @@ const CustomerForm = props => {
         return;
       }
 
-      await customerService.put(`/${customer.id}/balances`, editedCustomer);
+      await customerService.put(`/${customer.id}`, editedCustomer);
 
       if (editedCustomer) {
         onEditCustomer(editedCustomer);
