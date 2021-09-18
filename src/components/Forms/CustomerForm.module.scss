@@ -17,6 +17,25 @@
   grid-gap: 2%;
 }
 
+.BalanceForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.BalanceFormGrid {
+  display: grid;
+  max-width: 100%;
+  width: 50%;
+  margin: 0 auto;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  grid-gap: 3%;
+}
+
 .ActionButtons {
   display: flex;
   align-items: center;
