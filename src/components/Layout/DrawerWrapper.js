@@ -1,8 +1,8 @@
 import React from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import NavBar from '../UI/Navigation/NavBar';
+import Drawer from '../UI/Navigation/Drawer';
 
-const Nav = () => {
+const DrawerWrapper = props => {
   const { authState, oktaAuth } = useOktaAuth();
 
   const logout = async () => {
@@ -20,10 +20,10 @@ const Nav = () => {
       : [{ path: '/', text: 'Login' }];
 
   return (
-    <nav>
-      <NavBar logout={logout} links={navLinks} />
-    </nav>
+    <Drawer links={navLinks} logout={logout}>
+      {props.children}
+    </Drawer>
   );
 };
 
-export default Nav;
+export default DrawerWrapper;

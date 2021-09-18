@@ -1,10 +1,10 @@
 @import '../../utilities/colors.module.scss';
+@import '../../utilities/mixins.module.scss';
 
 .CustomerTable {
   width: 85%;
   margin: 0 auto;
-  margin-bottom: 40px;
-  box-shadow: 0 0px 20px 1px $primaryPurple;
+  @include shadow();
 }
 
 .Spinner {

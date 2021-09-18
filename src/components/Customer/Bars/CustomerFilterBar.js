@@ -11,12 +11,13 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import styles from './CustomerFilterBar.module.scss';
+import colors from './../../../utilities/colors.module.scss';
 
 const CustomerFilterBar = props => {
   const theme = createMuiTheme({
     palette: {
-      primary: { main: '#53008c' },
-      secondary: { main: '#04bf9d' },
+      primary: { main: colors.primary },
+      secondary: { main: colors.secondary },
     },
   });
 
@@ -48,45 +49,45 @@ const CustomerFilterBar = props => {
       <MuiThemeProvider theme={theme}>
         <TextField
           className={classes.textField}
-          id="outlined-search"
-          label="Buscar..."
-          type="search"
-          variant="outlined"
+          id='outlined-search'
+          label='Buscar...'
+          type='search'
+          variant='outlined'
           onChange={props.onFilter}
         />
         <FormControl className={classes.formControl}>
-          <InputLabel id="region">Localidad</InputLabel>
+          <InputLabel id='region'>Localidad</InputLabel>
           <Select
-            labelId="region"
-            id="region-select"
+            labelId='region'
+            id='region-select'
             value={regionValue}
             onChange={handlerDropdownChange}
           >
-            <MenuItem value="all">Todos</MenuItem>
-            <MenuItem value="st">Santa Teresita</MenuItem>
-            <MenuItem value="mdt">Mar del Tuyu</MenuItem>
+            <MenuItem value='all'>Todos</MenuItem>
+            <MenuItem value='st'>Santa Teresita</MenuItem>
+            <MenuItem value='mdt'>Mar del Tuyu</MenuItem>
           </Select>
         </FormControl>
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Saldo</FormLabel>
+        <FormControl component='fieldset'>
+          <FormLabel component='legend'>Saldo</FormLabel>
           <RadioGroup
-            aria-label="saldo"
-            name="saldo"
+            aria-label='saldo'
+            name='saldo'
             value={radioValue}
             onChange={handlerRadioChange}
             row
           >
             <FormControlLabel
-              value="positivo"
+              value='positivo'
               control={<Radio />}
-              label="Positivo"
+              label='Positivo'
             />
             <FormControlLabel
-              value="negativo"
+              value='negativo'
               control={<Radio />}
-              label="Negativo"
+              label='Negativo'
             />
-            <FormControlLabel value="all" control={<Radio />} label="Todos" />
+            <FormControlLabel value='all' control={<Radio />} label='Todos' />
           </RadioGroup>
         </FormControl>
       </MuiThemeProvider>
