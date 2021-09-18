@@ -257,6 +257,8 @@ const CustomerForm = props => {
         businessName: businessNameRef.current.value,
         email: emailRef.current.value,
         region: regionValue,
+        positiveBalance: customer.positiveBalance,
+        negativeBalance: customer.negativeBalance,
       };
 
       if (!validateCustomer(editedCustomer)) {
@@ -264,7 +266,7 @@ const CustomerForm = props => {
         return;
       }
 
-      await customerService.put(`/${customer.id}`, editedCustomer);
+      await customerService.put(`/${customer.id}/balances`, editedCustomer);
 
       if (editedCustomer) {
         onEditCustomer(editedCustomer);

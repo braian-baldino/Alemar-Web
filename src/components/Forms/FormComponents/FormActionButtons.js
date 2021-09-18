@@ -18,22 +18,26 @@ const FormActionButtons = props => {
   return (
     <MuiThemeProvider theme={theme}>
       <div className={styles.Buttons}>
-        <IconButton
-          style={{
-            backgroundColor: colors.primary,
-            color: colors.white,
-          }}
-        >
-          <AddIcon fontSize='medium' onClick={onAccept} />
-        </IconButton>
-        <IconButton
-          style={{
-            backgroundColor: colors.red,
-            color: colors.white,
-          }}
-        >
-          <CloseIcon fontSize='medium' onClick={onClose} />
-        </IconButton>
+        <div onClick={onAccept}>
+          <IconButton
+            style={{
+              backgroundColor: colors.primary,
+              color: colors.white,
+            }}
+          >
+            <AddIcon fontSize='medium' />
+          </IconButton>
+        </div>
+        <div onClick={onClose}>
+          <IconButton
+            style={{
+              backgroundColor: colors.red,
+              color: colors.white,
+            }}
+          >
+            <CloseIcon fontSize='medium' />
+          </IconButton>
+        </div>
       </div>
     </MuiThemeProvider>
   );

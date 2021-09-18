@@ -10,6 +10,7 @@ import customerService from './../../services/customerService';
 import dropDownService from './../../services/dropdownService';
 import CustomerForm from '../Forms/CustomerForm';
 import DropDownContext from '../../store/dropDown-context';
+import CustomerBalanceForm from '../Forms/CustomerBalanceForm';
 
 const tableMainHeaders = [
   'Cliente',
@@ -45,7 +46,8 @@ const Customer = () => {
   const { authState, oktaAuth } = useOktaAuth();
   const ctx = useContext(DropDownContext);
   const [formMode, setFormMode] = useState();
-  const [showAddForm, setShowAddForm] = useState(false);
+  const [showCustomerForm, setShowCustomerForm] = useState(false);
+  const [showBalanceForm, setShowBalanceForm] = useState(false);
   const [customers, setCustomers] = useState([]);
   const [customerToEdit, setCustomerToEdit] = useState({});
   const [filterCustomers, setFilterCustomers] = useState([]);
@@ -155,19 +157,25 @@ const Customer = () => {
     }
   };
 
-  const onEditHandler = id => {
+  const onEditBalanceHandler = id => {
+    setCustomerToEdit(customers.find(customer => customer.id === id));
+    setShowBalanceForm(true);
+  };
+
+  const onEditFormHandler = id => {
     setFormMode('edit');
     setCustomerToEdit(customers.find(customer => customer.id === id));
-    setShowAddForm(true);
+    setShowCustomerForm(true);
   };
 
   const openAddFormHandler = () => {
     setFormMode('add');
-    setShowAddForm(true);
+    setShowCustomerForm(true);
   };
 
   const onCloseFormHandler = () => {
-    setShowAddForm(false);
+    setShowCustomerForm(false);
+    setShowBalanceForm(false);
   };
 
   const onAddCustomer = newCustomer => {
@@ -204,7 +212,8 @@ const Customer = () => {
             detailsKeys={detailsKeys}
             tableData={filterCustomers}
             mapData={mapCustomerToDataTable}
-            onEdit={onEditHandler}
+            onEdit={onEditFormHandler}
+            onEditBalance={onEditBalanceHandler}
             onDelete={onDeleteHandler}
             onAddButton={openAddFormHandler}
           />
@@ -212,7 +221,7 @@ const Customer = () => {
       )}
       {!isLoading && error && <p>{error}</p>}
       {isLoading && <CircularProgress />}
-      {showAddForm ? (
+      {showCustomerForm ? (
         <Modal onClose={onCloseFormHandler}>
           <CustomerForm
             formMode={formMode}
@@ -220,6 +229,15 @@ const Customer = () => {
             onAddCustomer={onAddCustomer}
             onEditCustomer={onEditCustomer}
             onClose={onCloseFormHandler}
+          />
+        </Modal>
+      ) : null}
+      {showBalanceForm ? (
+        <Modal onClose={onCloseFormHandler}>
+          <CustomerBalanceForm
+            customer={customerToEdit}
+            onClose={onCloseFormHandler}
+            onEditCustomer={onEditCustomer}
           />
         </Modal>
       ) : null}
