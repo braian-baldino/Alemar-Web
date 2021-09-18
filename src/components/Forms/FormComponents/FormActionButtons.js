@@ -14,14 +14,14 @@ const theme = createMuiTheme({
 });
 
 const FormActionButtons = props => {
-  const { onAccept, onClose } = props;
+  const { onAccept, onClose, disabled } = props;
   return (
     <MuiThemeProvider theme={theme}>
       <div className={styles.Buttons}>
-        <div onClick={onAccept}>
+        <div onClick={disabled ? null : onAccept}>
           <IconButton
             style={{
-              backgroundColor: colors.primary,
+              backgroundColor: disabled ? colors.shadow : colors.primary,
               color: colors.white,
             }}
           >

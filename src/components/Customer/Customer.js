@@ -11,6 +11,8 @@ import dropDownService from './../../services/dropdownService';
 import CustomerForm from '../Forms/CustomerForm';
 import DropDownContext from '../../store/dropDown-context';
 import CustomerBalanceForm from '../Forms/CustomerBalanceForm';
+import { styles } from '@material-ui/pickers/views/Calendar/Calendar';
+import Spinner from '../UI/Spinner';
 
 const tableMainHeaders = [
   'Cliente',
@@ -220,7 +222,14 @@ const Customer = () => {
         </div>
       )}
       {!isLoading && error && <p>{error}</p>}
-      {isLoading && <CircularProgress />}
+      {isLoading && (
+        <Spinner
+          size={100}
+          color='secondary'
+          label='Cargando...'
+          labelVariant='h6'
+        />
+      )}
       {showCustomerForm ? (
         <Modal onClose={onCloseFormHandler}>
           <CustomerForm

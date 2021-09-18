@@ -6,10 +6,12 @@ import FormControlSelect from './FormComponents/FormControlSelect';
 import FormActionButtons from './FormComponents/FormActionButtons';
 import DropDownContext from '../../store/dropDown-context';
 import styles from './CustomerForm.module.scss';
+import Spinner from '../UI/Spinner';
 
 const CustomerForm = props => {
   const { formMode, onClose, customer, onAddCustomer, onEditCustomer } = props;
   const { authState, oktaAuth } = useOktaAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const nameRef = useRef();
   const lastNameRef = useRef('juan carlos');
   const dniRef = useRef();
@@ -204,6 +206,7 @@ const CustomerForm = props => {
 
   const onAddCustomerHandler = async () => {
     try {
+      setIsLoading(true);
       customerService.defaults.headers.common[
         'Authorization'
       ] = `Bearer ${authState.accessToken.accessToken}`;
@@ -230,17 +233,21 @@ const CustomerForm = props => {
 
       const result = await (await customerService.post('/', newCustomer)).data;
 
+      setIsLoading(false);
+
       if (result) {
         onAddCustomer(result);
         onClose();
       }
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
   const onEditCustomerHandler = async () => {
     try {
+      setIsLoading(true);
       customerService.defaults.headers.common[
         'Authorization'
       ] = `Bearer ${authState.accessToken.accessToken}`;
@@ -263,48 +270,65 @@ const CustomerForm = props => {
 
       if (!validateCustomer(editedCustomer)) {
         console.log('error');
+        setIsLoading(false);
         return;
       }
 
       await customerService.put(`/${customer.id}`, editedCustomer);
 
+      setIsLoading(false);
       if (editedCustomer) {
         onEditCustomer(editedCustomer);
         onClose();
       }
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
   };
 
   return (
-    <form className={styles.Form}>
-      <div className={styles.FormGrid}>
-        <FormControlSelect
-          id='region'
-          label='Localidad'
-          data={ctx.regions}
-          valueHandler={regionValueSelect}
-          selectValue={regionValue}
+    <React.Fragment>
+      {!isLoading && (
+        <form className={styles.Form}>
+          <div className={styles.FormGrid}>
+            <FormControlSelect
+              id='region'
+              label='Localidad'
+              data={ctx.regions}
+              valueHandler={regionValueSelect}
+              selectValue={regionValue}
+            />
+            {formMode === 'edit' &&
+              inputsForEdit.map(input => {
+                return <FormControlInput key={input.id} {...input} />;
+              })}
+            {formMode === 'add' &&
+              inputsForAdd.map(input => {
+                return <FormControlInput key={input.id} {...input} />;
+              })}
+          </div>
+          <div className={styles.ActionButtons}>
+            <FormActionButtons
+              onAccept={
+                formMode === 'add'
+                  ? onAddCustomerHandler
+                  : onEditCustomerHandler
+              }
+              onClose={onClose}
+            />
+          </div>
+        </form>
+      )}
+      {isLoading && (
+        <Spinner
+          size={60}
+          label='Cargando...'
+          labelVariant='h6'
+          color='secondary'
         />
-        {formMode === 'edit' &&
-          inputsForEdit.map(input => {
-            return <FormControlInput key={input.id} {...input} />;
-          })}
-        {formMode === 'add' &&
-          inputsForAdd.map(input => {
-            return <FormControlInput key={input.id} {...input} />;
-          })}
-      </div>
-      <div className={styles.ActionButtons}>
-        <FormActionButtons
-          onAccept={
-            formMode === 'add' ? onAddCustomerHandler : onEditCustomerHandler
-          }
-          onClose={onClose}
-        />
-      </div>
-    </form>
+      )}
+    </React.Fragment>
   );
 };
 
