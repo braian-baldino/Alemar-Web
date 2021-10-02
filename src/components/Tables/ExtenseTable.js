@@ -17,6 +17,8 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import ActionTableIcons from '../UI/ActionTableIcons';
 import AddUsercon from '../UI/Icons/AddUserIcon';
 import styles from './ExtenseTable.module.scss';
+import colors from './../../utilities/colors.module.scss';
+import CustomerBadge from '../UI/CustomerBadge';
 
 const useInnerSytles = makeStyles({
   root: {
@@ -39,7 +41,8 @@ function Row(props) {
     detailsHeaders,
     mainKeys,
     detailsKeys,
-    onEditHandler,
+    onEdit,
+    onEditBalance,
     onDelete,
   } = props;
   const [open, setOpen] = React.useState(false);
@@ -66,7 +69,8 @@ function Row(props) {
         })}
         <TableCell>
           <ActionTableIcons
-            onEdit={onEditHandler}
+            onEdit={() => onEdit(dataElement['id'])}
+            onEditBalance={() => onEditBalance(dataElement['id'])}
             onDelete={() => onDelete(dataElement['id'])}
           />
         </TableCell>
@@ -75,43 +79,42 @@ function Row(props) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout='auto' unmountOnExit>
             <Box margin={1}>
-              <Typography variant='h6' gutterBottom component='div'>
-                Detalles
-              </Typography>
-              <Table
-                className={styles.DetailsTable}
-                size='small'
-                aria-label='purchases'
-              >
-                <TableHead>
-                  <TableRow>
-                    {detailsHeaders.map((header, i) => (
-                      <TableCell className={classes.row} key={i + header}>
-                        {header}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {dataElement['details'].map((element, i) => (
-                    <TableRow
-                      className={styles.details}
-                      key={i + element['id']}
-                    >
-                      {detailsKeys.map((key, i) => {
-                        return (
-                          <TableCell
-                            className={classes.details}
-                            key={i + [dataElement['id']]}
-                          >
-                            {element[key]}
-                          </TableCell>
-                        );
-                      })}
+              <CustomerBadge
+                text={'Detalles: ' + dataElement['fullName']}
+                color='purple'
+              />
+              <div className={styles.DetailsTable}>
+                <Table size='small' aria-label='purchases'>
+                  <TableHead>
+                    <TableRow>
+                      {detailsHeaders.map((header, i) => (
+                        <TableCell className={classes.row} key={i + header}>
+                          {header}
+                        </TableCell>
+                      ))}
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHead>
+                  <TableBody>
+                    {dataElement['details'].map((element, i) => (
+                      <TableRow
+                        className={styles.details}
+                        key={i + element['id']}
+                      >
+                        {detailsKeys.map((key, i) => {
+                          return (
+                            <TableCell
+                              className={classes.details}
+                              key={i + [dataElement['id']]}
+                            >
+                              {element[key]}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </Box>
           </Collapse>
         </TableCell>
@@ -141,12 +144,12 @@ export default function ExtenseTable(props) {
     <Paper>
       <TableContainer className={props.className} component={Paper}>
         <Table aria-label='collapsible table'>
-          <TableHead>
+          <TableHead style={{ color: colors.white }}>
             <TableRow>
               <TableCell>
                 <AddUsercon
                   className={styles.AddCustomerIcon}
-                  onClick={props.onAdd}
+                  onClick={props.onAddButton}
                   onClose={props.onClose}
                 />
               </TableCell>
@@ -167,6 +170,9 @@ export default function ExtenseTable(props) {
         </Table>
       </TableContainer>
       <TablePagination
+        labelRowsPerPage='Filas por página'
+        nextIconButtonText='Siguiente'
+        backIconButtonText='Anterior'
         rowsPerPageOptions={[5, 10, 25]}
         component='div'
         count={data.length}

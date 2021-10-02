@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Spinner from './../UI/Spinner';
 import axios from './../../services/currencyService';
 import Divider from '@material-ui/core/Divider';
 import colors from './../../utilities/colors.module.scss';
@@ -8,7 +8,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: colors.primary },
+    primary: { main: colors.green },
     secondary: { main: colors.secondary },
   },
 });
@@ -52,7 +52,7 @@ const DolarNavItem = props => {
             <p>V: {dolarSaleValue}</p>
           </React.Fragment>
         )}
-        {isLoading && <CircularProgress size={25} color='primary' />}
+        {isLoading && <Spinner size={20} color='secondary' />}
       </div>
     </MuiThemeProvider>
   );
