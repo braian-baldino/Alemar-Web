@@ -9,21 +9,7 @@ const DrawerWrapper = props => {
     await oktaAuth.signOut();
   };
 
-  const navLinks =
-    authState && authState.isAuthenticated
-      ? [
-          { path: '/ventas', text: 'Ordenes' },
-          { path: '/productos', text: 'Productos' },
-          { path: '/clientes', text: 'Clientes' },
-          { path: '/home', text: 'Home' },
-        ]
-      : [{ path: '/', text: 'Login' }];
-
-  return (
-    <Drawer links={navLinks} logout={logout}>
-      {props.children}
-    </Drawer>
-  );
+  return <Drawer logout={logout}>{props.children}</Drawer>;
 };
 
 export default DrawerWrapper;

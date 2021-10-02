@@ -20,7 +20,11 @@ const ActionTableIcons = props => {
         <Divider orientation='vertical' />
       </span>
       <span>
-        <MonetizationOnIcon fontSize='medium' className={styles.Currency} />
+        <MonetizationOnIcon
+          onClick={props.onEditBalance}
+          fontSize='medium'
+          className={styles.Currency}
+        />
       </span>
       <span>
         <Divider orientation='vertical' />

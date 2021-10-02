@@ -4,12 +4,13 @@ import Section from '../Layout/Section';
 import CustomerFilterBar from './Bars/CustomerFilterBar';
 import ExtenseTable from '../Tables/ExtenseTable';
 import Modal from './../UI/Modal';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { useOktaAuth } from '@okta/okta-react';
 import customerService from './../../services/customerService';
 import dropDownService from './../../services/dropdownService';
 import CustomerForm from '../Forms/CustomerForm';
 import DropDownContext from '../../store/dropDown-context';
+import CustomerBalanceForm from '../Forms/CustomerBalanceForm';
+import Spinner from '../UI/Spinner';
 
 const tableMainHeaders = [
   'Cliente',
@@ -45,7 +46,8 @@ const Customer = () => {
   const { authState, oktaAuth } = useOktaAuth();
   const ctx = useContext(DropDownContext);
   const [formMode, setFormMode] = useState();
-  const [showAddForm, setShowAddForm] = useState(false);
+  const [showCustomerForm, setShowCustomerForm] = useState(false);
+  const [showBalanceForm, setShowBalanceForm] = useState(false);
   const [customers, setCustomers] = useState([]);
   const [customerToEdit, setCustomerToEdit] = useState({});
   const [filterCustomers, setFilterCustomers] = useState([]);
@@ -83,7 +85,7 @@ const Customer = () => {
 
   const mapRegion = regionValue => {
     const region = ctx.regions.find(region => region.value === regionValue);
-    return region.name ? region.name : '-';
+    return region?.name ?? '-';
   };
 
   const mapCustomerToDataTable = customers => {
@@ -109,25 +111,55 @@ const Customer = () => {
     });
   };
 
-  const onFilterTable = event => {
-    const value = event.target.value.toLocaleLowerCase();
+  const filterBalanceCondition = (filter, element) => {
+    if (filter === 'all') {
+      return element;
+    }
+    if (filter === 'positivo') {
+      return element.positiveBalance > 0;
+    }
+    if (filter === 'negativo') {
+      return element.negativeBalance < 0;
+    }
+  };
 
-    if (value.length === 0) {
+  const onFilterBalance = balanceType => {
+    const newFilteredCustomers = customers.filter(customer => {
+      return filterBalanceCondition(balanceType, customer);
+    });
+    setFilterCustomers(newFilteredCustomers);
+  };
+
+  const onFilterRegion = regionValue => {
+    let newFilteredCustomers = customers;
+    if (regionValue !== 'all') {
+      newFilteredCustomers = customers.filter(customer => {
+        return customer.region === regionValue;
+      });
+    }
+
+    setFilterCustomers(newFilteredCustomers);
+  };
+
+  const onFilterTable = event => {
+    const filterParam = event.target.value.toLocaleLowerCase();
+
+    if (filterParam.length === 0) {
       setFilterCustomers(customers);
     }
 
-    if (value.length >= 1) {
+    if (filterParam.length >= 1) {
       const filterResult = customers.filter(customer => {
         return (
-          customer.firstName.toLocaleLowerCase().includes(value) ||
-          customer.lastName.toLocaleLowerCase().includes(value) ||
-          customer.dni.includes(value) ||
-          customer.phoneNumber?.includes(value) ||
-          customer.email?.toLocaleLowerCase().includes(value) ||
-          customer.address?.toLocaleLowerCase().includes(value) ||
-          customer.bankAccount?.includes(value) ||
-          customer.bussinessName?.toLocaleLowerCase().includes(value) ||
-          customer.cuitCuil?.includes(value)
+          customer.firstName.toLocaleLowerCase().includes(filterParam) ||
+          customer.lastName.toLocaleLowerCase().includes(filterParam) ||
+          customer.dni.includes(filterParam) ||
+          customer.phoneNumber?.includes(filterParam) ||
+          customer.email?.toLocaleLowerCase().includes(filterParam) ||
+          customer.address?.toLocaleLowerCase().includes(filterParam) ||
+          customer.bankAccount?.includes(filterParam) ||
+          customer.bussinessName?.toLocaleLowerCase().includes(filterParam) ||
+          customer.cuitCuil?.includes(filterParam)
         );
       });
 
@@ -155,19 +187,25 @@ const Customer = () => {
     }
   };
 
-  const onEditHandler = id => {
+  const onEditBalanceHandler = id => {
+    setCustomerToEdit(customers.find(customer => customer.id === id));
+    setShowBalanceForm(true);
+  };
+
+  const onEditFormHandler = id => {
     setFormMode('edit');
     setCustomerToEdit(customers.find(customer => customer.id === id));
-    setShowAddForm(true);
+    setShowCustomerForm(true);
   };
 
   const openAddFormHandler = () => {
     setFormMode('add');
-    setShowAddForm(true);
+    setShowCustomerForm(true);
   };
 
   const onCloseFormHandler = () => {
-    setShowAddForm(false);
+    setShowCustomerForm(false);
+    setShowBalanceForm(false);
   };
 
   const onAddCustomer = newCustomer => {
@@ -194,7 +232,11 @@ const Customer = () => {
 
   return (
     <Section>
-      <CustomerFilterBar onFilter={onFilterTable} />
+      <CustomerFilterBar
+        onFilterHandler={onFilterTable}
+        onFilterBalanceHandler={onFilterBalance}
+        onFilterRegionHandler={onFilterRegion}
+      />
       {!isLoading && (
         <div className={classes.CustomerTable}>
           <ExtenseTable
@@ -204,15 +246,23 @@ const Customer = () => {
             detailsKeys={detailsKeys}
             tableData={filterCustomers}
             mapData={mapCustomerToDataTable}
-            onEdit={onEditHandler}
+            onEdit={onEditFormHandler}
+            onEditBalance={onEditBalanceHandler}
             onDelete={onDeleteHandler}
             onAddButton={openAddFormHandler}
           />
         </div>
       )}
       {!isLoading && error && <p>{error}</p>}
-      {isLoading && <CircularProgress />}
-      {showAddForm ? (
+      {isLoading && (
+        <Spinner
+          size={100}
+          color='secondary'
+          label='Cargando...'
+          labelVariant='h6'
+        />
+      )}
+      {showCustomerForm ? (
         <Modal onClose={onCloseFormHandler}>
           <CustomerForm
             formMode={formMode}
@@ -220,6 +270,15 @@ const Customer = () => {
             onAddCustomer={onAddCustomer}
             onEditCustomer={onEditCustomer}
             onClose={onCloseFormHandler}
+          />
+        </Modal>
+      ) : null}
+      {showBalanceForm ? (
+        <Modal onClose={onCloseFormHandler}>
+          <CustomerBalanceForm
+            customer={customerToEdit}
+            onClose={onCloseFormHandler}
+            onEditCustomer={onEditCustomer}
           />
         </Modal>
       ) : null}

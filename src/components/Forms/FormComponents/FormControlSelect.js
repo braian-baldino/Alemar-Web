@@ -9,8 +9,8 @@ import FormControl from '@material-ui/core/FormControl';
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: colors.secondary },
-    secondary: { main: colors.primary },
+    primary: { main: colors.purple },
+    secondary: { main: colors.secondary },
   },
 });
 
@@ -31,6 +31,9 @@ const FormControlSelect = props => {
   const handleChange = event => {
     setValue(event.target.value);
     valueHandler(event.target.value);
+    if (props.onChangeHandler) {
+      props.onChangeHandler(event.target.value);
+    }
   };
 
   return (
@@ -42,6 +45,7 @@ const FormControlSelect = props => {
           id={label + 'Select'}
           value={value}
           onChange={handleChange}
+          {...props}
         >
           {data.map((item, i) => {
             return (

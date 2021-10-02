@@ -8,32 +8,36 @@ import styles from './FormActionButtons.module.scss';
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: colors.primary },
+    primary: { main: colors.purple },
     secondary: { main: colors.secondary },
   },
 });
 
 const FormActionButtons = props => {
-  const { onAccept, onClose } = props;
+  const { onAccept, onClose, disabled } = props;
   return (
     <MuiThemeProvider theme={theme}>
       <div className={styles.Buttons}>
-        <IconButton
-          style={{
-            backgroundColor: colors.primary,
-            color: colors.white,
-          }}
-        >
-          <AddIcon fontSize='medium' onClick={onAccept} />
-        </IconButton>
-        <IconButton
-          style={{
-            backgroundColor: colors.red,
-            color: colors.white,
-          }}
-        >
-          <CloseIcon fontSize='medium' onClick={onClose} />
-        </IconButton>
+        <div onClick={disabled ? null : onAccept}>
+          <IconButton
+            style={{
+              backgroundColor: disabled ? colors.shadow : colors.primary,
+              color: colors.white,
+            }}
+          >
+            <AddIcon fontSize='medium' />
+          </IconButton>
+        </div>
+        <div onClick={onClose}>
+          <IconButton
+            style={{
+              backgroundColor: colors.red,
+              color: colors.white,
+            }}
+          >
+            <CloseIcon fontSize='medium' />
+          </IconButton>
+        </div>
       </div>
     </MuiThemeProvider>
   );
