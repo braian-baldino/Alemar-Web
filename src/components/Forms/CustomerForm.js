@@ -7,6 +7,7 @@ import FormActionButtons from './FormComponents/FormActionButtons';
 import DropDownContext from '../../store/dropDown-context';
 import styles from './CustomerForm.module.scss';
 import Spinner from '../UI/Spinner';
+import CustomerBadge from '../UI/CustomerBadge';
 
 const CustomerForm = props => {
   const { formMode, onClose, customer, onAddCustomer, onEditCustomer } = props;
@@ -291,6 +292,14 @@ const CustomerForm = props => {
     <React.Fragment>
       {!isLoading && (
         <form className={styles.Form}>
+          <CustomerBadge
+            text={
+              formMode === 'edit'
+                ? customer.firstName + ' ' + customer.lastName
+                : 'Nuevo Cliente'
+            }
+            color={formMode === 'edit' ? 'green' : 'shadow'}
+          />
           <div className={styles.FormGrid}>
             <FormControlSelect
               id='region'

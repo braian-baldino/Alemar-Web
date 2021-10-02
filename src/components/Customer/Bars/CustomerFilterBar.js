@@ -1,22 +1,27 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import DropDownContext from '../../../store/dropDown-context';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import styles from './CustomerFilterBar.module.scss';
 import colors from './../../../utilities/colors.module.scss';
+import FormControlSelect from '../../Forms/FormComponents/FormControlSelect';
 
 const CustomerFilterBar = props => {
+  const { onFilterHandler, onFilterBalanceHandler, onFilterRegionHandler } =
+    props;
+  const [radioValue, setRadioValue] = useState('all');
+  const [regionValue, setRegionValue] = useState('all');
+  const ctx = useContext(DropDownContext);
+
   const theme = createMuiTheme({
     palette: {
-      primary: { main: colors.primary },
+      primary: { main: colors.purple },
       secondary: { main: colors.secondary },
     },
   });
@@ -33,16 +38,20 @@ const CustomerFilterBar = props => {
   }));
 
   const classes = useStyles();
-  const [radioValue, setRadioValue] = React.useState('all');
-  const [regionValue, setRegionValue] = React.useState('all');
 
-  const handlerDropdownChange = event => {
-    setRegionValue(event.target.value);
+  const regionValueHandler = () => {
+    setRegionValue(regionValue);
   };
 
   const handlerRadioChange = event => {
     setRadioValue(event.target.value);
+    onFilterBalanceHandler(event.target.value);
   };
+
+  const dropDownFilterValues = [
+    { value: 'all', name: 'Todas' },
+    ...(ctx.regions ?? []),
+  ];
 
   return (
     <div className={styles.FilterBar}>
@@ -51,23 +60,19 @@ const CustomerFilterBar = props => {
           className={classes.textField}
           id='outlined-search'
           label='Buscar...'
-          type='search'
+          type='text'
           variant='outlined'
-          onChange={props.onFilter}
+          color='primary'
+          onChange={onFilterHandler}
         />
-        <FormControl className={classes.formControl}>
-          <InputLabel id='region'>Localidad</InputLabel>
-          <Select
-            labelId='region'
-            id='region-select'
-            value={regionValue}
-            onChange={handlerDropdownChange}
-          >
-            <MenuItem value='all'>Todos</MenuItem>
-            <MenuItem value='st'>Santa Teresita</MenuItem>
-            <MenuItem value='mdt'>Mar del Tuyu</MenuItem>
-          </Select>
-        </FormControl>
+        <FormControlSelect
+          id='region'
+          label='Localidad'
+          data={dropDownFilterValues}
+          selectValue={regionValue}
+          valueHandler={regionValueHandler}
+          onChangeHandler={onFilterRegionHandler}
+        />
         <FormControl component='fieldset'>
           <FormLabel component='legend'>Saldo</FormLabel>
           <RadioGroup

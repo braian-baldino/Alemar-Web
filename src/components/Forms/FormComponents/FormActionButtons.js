@@ -8,7 +8,7 @@ import styles from './FormActionButtons.module.scss';
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: colors.primary },
+    primary: { main: colors.purple },
     secondary: { main: colors.secondary },
   },
 });

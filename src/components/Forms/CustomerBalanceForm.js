@@ -3,11 +3,8 @@ import { useOktaAuth } from '@okta/okta-react';
 import customerService from '../../services/customerService';
 import FormControlInput from './FormComponents/FormControlInput';
 import FormActionButtons from './FormComponents/FormActionButtons';
-import Chip from '@material-ui/core/Chip';
-import Avatar from '@material-ui/core/Avatar';
-import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import styles from './CustomerForm.module.scss';
-import colors from './../../utilities/colors.module.scss';
+import CustomerBadge from '../UI/CustomerBadge';
 
 const CustomerBalanceForm = props => {
   const { customer, onClose, onEditCustomer } = props;
@@ -60,11 +57,9 @@ const CustomerBalanceForm = props => {
 
   return (
     <form className={styles.BalanceForm}>
-      <Chip
-        icon={<AccountCircleRoundedIcon style={{ color: colors.green }} />}
-        label={customer.firstName + ' ' + customer.lastName}
-        variant='outlined'
-        style={{ marginBottom: '1.5rem' }}
+      <CustomerBadge
+        text={customer.firstName + ' ' + customer.lastName}
+        color='green'
       />
       <div className={styles.BalanceFormGrid}>
         {inputs.map(input => {
