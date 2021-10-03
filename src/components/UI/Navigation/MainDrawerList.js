@@ -13,6 +13,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import EventNoteIcon from '@material-ui/icons/EventNote';
+import StoreIcon from '@material-ui/icons/Store';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,6 +59,14 @@ const MainDrawerList = () => {
             <ShoppingCartIcon />
           </ListItemIcon>
           <ListItemText primary='Ventas' />
+        </ListItem>
+      </NavLink>
+      <NavLink to='/miNegocio'>
+        <ListItem button key='miNegocio'>
+          <ListItemIcon style={{ color: colors.white }}>
+            <StoreIcon />
+          </ListItemIcon>
+          <ListItemText primary='Mi Negocio' />
         </ListItem>
       </NavLink>
       <NavLink to='/estadisticas'>
