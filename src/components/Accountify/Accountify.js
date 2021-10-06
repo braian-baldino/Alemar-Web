@@ -1,155 +1,189 @@
-import React, { useState } from 'react';
-import { useOktaAuth } from '@okta/okta-react';
-import { ResponsivePie } from '@nivo/pie';
+import React, { useState, useEffect } from 'react';
+import PieChart from './PieChart';
+import ActionButtons from './ActionButtons';
+import Divider from '@material-ui/core/Divider';
+import styles from './Accountify.module.scss';
+import FormControlSelect from '../Forms/FormComponents/FormControlSelect';
+import Typography from '@material-ui/core/Typography';
 
-const data = [
+const mockData = [
   {
-    id: 'haskell',
-    label: 'haskell',
-    value: 75,
-    color: 'hsl(18, 70%, 50%)',
+    month: 1,
+    spendings: [
+      {
+        id: 'impuestos',
+        label: 'Impuestos',
+        value: 75,
+        color: 'hsl(18, 70%, 50%)',
+      },
+      {
+        id: 'material',
+        label: 'Material',
+        value: 416,
+        color: 'hsl(219, 70%, 50%)',
+      },
+      {
+        id: 'alquiler',
+        label: 'Alquiler',
+        value: 88,
+        color: 'hsl(114, 70%, 50%)',
+      },
+      {
+        id: 'vehiculo',
+        label: 'Vehiculo',
+        value: 220,
+        color: 'hsl(240, 70%, 50%)',
+      },
+      {
+        id: 'sueldo',
+        label: 'Sueldo',
+        value: 303,
+        color: 'hsl(317, 70%, 50%)',
+      },
+    ],
   },
   {
-    id: 'erlang',
-    label: 'erlang',
-    value: 416,
-    color: 'hsl(219, 70%, 50%)',
+    month: 2,
+    spendings: [
+      {
+        id: 'impuestos',
+        label: 'Impuestos',
+        value: 100,
+        color: 'hsl(18, 70%, 50%)',
+      },
+      {
+        id: 'material',
+        label: 'Material',
+        value: 500,
+        color: 'hsl(219, 70%, 50%)',
+      },
+      {
+        id: 'alquiler',
+        label: 'Alquiler',
+        value: 9,
+        color: 'hsl(114, 70%, 50%)',
+      },
+      {
+        id: 'vehiculo',
+        label: 'Vehiculo',
+        value: 36,
+        color: 'hsl(240, 70%, 50%)',
+      },
+      {
+        id: 'sueldo',
+        label: 'Sueldo',
+        value: 410,
+        color: 'hsl(317, 70%, 50%)',
+      },
+    ],
   },
   {
-    id: 'php',
-    label: 'php',
-    value: 88,
-    color: 'hsl(114, 70%, 50%)',
+    month: 10,
+    spendings: [
+      {
+        id: 'impuestos',
+        label: 'Impuestos',
+        value: 100,
+        color: 'hsl(18, 70%, 50%)',
+      },
+      {
+        id: 'material',
+        label: 'Material',
+        value: 58,
+        color: 'hsl(219, 70%, 50%)',
+      },
+      {
+        id: 'alquiler',
+        label: 'Alquiler',
+        value: 300,
+        color: 'hsl(114, 70%, 50%)',
+      },
+      {
+        id: 'vehiculo',
+        label: 'Vehiculo',
+        value: 150,
+        color: 'hsl(240, 70%, 50%)',
+      },
+      {
+        id: 'sueldo',
+        label: 'Sueldo',
+        value: 401,
+        color: 'hsl(317, 70%, 50%)',
+      },
+    ],
   },
-  {
-    id: 'java',
-    label: 'java',
-    value: 220,
-    color: 'hsl(240, 70%, 50%)',
-  },
-  {
-    id: 'go',
-    label: 'go',
-    value: 303,
-    color: 'hsl(317, 70%, 50%)',
-  },
+  { month: 3, spendings: [] },
+  { month: 4, spendings: [] },
+  { month: 5, spendings: [] },
+  { month: 6, spendings: [] },
+  { month: 7, spendings: [] },
+  { month: 8, spendings: [] },
+  { month: 9, spendings: [] },
+  { month: 11, spendings: [] },
+  { month: 12, spendings: [] },
+];
+
+const selectValues = [
+  { value: 1, name: 'Enero' },
+  { value: 2, name: 'Febrero' },
+  { value: 3, name: 'Marzo' },
+  { value: 4, name: 'Abril' },
+  { value: 5, name: 'Mayo' },
+  { value: 6, name: 'Junio' },
+  { value: 7, name: 'Julio' },
+  { value: 8, name: 'Agosto' },
+  { value: 9, name: 'Septiembre' },
+  { value: 10, name: 'Octubre' },
+  { value: 11, name: 'Noviembre' },
+  { value: 12, name: 'Diciembre' },
 ];
 
 const Accountify = () => {
-  const { authState, oktaAuth } = useOktaAuth();
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [data, setData] = useState([]);
+
+  const monthValueHandler = value => {
+    setMonth(value);
+    dataHandler(value);
+  };
+
+  const dataHandler = value => {
+    const selectedData = mockData.find(item => item.month === value);
+    setData(selectedData.spendings);
+  };
+
+  useEffect(() => {
+    dataHandler(new Date().getMonth() + 1);
+  }, []);
 
   return (
-    <ResponsivePie
-      data={data}
-      margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-      innerRadius={0.5}
-      padAngle={0.7}
-      cornerRadius={3}
-      activeOuterRadiusOffset={8}
-      borderWidth={1}
-      borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
-      arcLinkLabelsSkipAngle={10}
-      arcLinkLabelsTextColor='#333333'
-      arcLinkLabelsThickness={2}
-      arcLinkLabelsColor={{ from: 'color' }}
-      arcLabelsSkipAngle={10}
-      arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
-      defs={[
-        {
-          id: 'dots',
-          type: 'patternDots',
-          background: 'inherit',
-          color: 'rgba(255, 255, 255, 0.3)',
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: 'lines',
-          type: 'patternLines',
-          background: 'inherit',
-          color: 'rgba(255, 255, 255, 0.3)',
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
-      fill={[
-        {
-          match: {
-            id: 'ruby',
-          },
-          id: 'dots',
-        },
-        {
-          match: {
-            id: 'c',
-          },
-          id: 'dots',
-        },
-        {
-          match: {
-            id: 'go',
-          },
-          id: 'dots',
-        },
-        {
-          match: {
-            id: 'python',
-          },
-          id: 'dots',
-        },
-        {
-          match: {
-            id: 'scala',
-          },
-          id: 'lines',
-        },
-        {
-          match: {
-            id: 'lisp',
-          },
-          id: 'lines',
-        },
-        {
-          match: {
-            id: 'elixir',
-          },
-          id: 'lines',
-        },
-        {
-          match: {
-            id: 'javascript',
-          },
-          id: 'lines',
-        },
-      ]}
-      legends={[
-        {
-          anchor: 'bottom',
-          direction: 'row',
-          justify: false,
-          translateX: 0,
-          translateY: 56,
-          itemsSpacing: 0,
-          itemWidth: 100,
-          itemHeight: 18,
-          itemTextColor: '#999',
-          itemDirection: 'left-to-right',
-          itemOpacity: 1,
-          symbolSize: 18,
-          symbolShape: 'circle',
-          effects: [
-            {
-              on: 'hover',
-              style: {
-                itemTextColor: '#000',
-              },
-            },
-          ],
-        },
-      ]}
-    />
+    <React.Fragment>
+      <div
+        style={{ display: 'flex', justifyContent: 'center', marginTop: '1%' }}
+      >
+        <FormControlSelect
+          id='month'
+          label='Mes'
+          data={selectValues}
+          valueHandler={monthValueHandler}
+          selectValue={month}
+        />
+      </div>
+      {data.length >= 1 && <PieChart data={data} />}
+      {data.length < 1 && (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', marginTop: '3%' }}
+        >
+          <Typography variant='h4'>No se registra informacion</Typography>
+        </div>
+      )}
+      <Divider style={{ marginTop: '1%' }} variant='fullWidth' />
+      <div className={styles.Container}>
+        <div className={styles.ActionButtons}>
+          <ActionButtons />
+        </div>
+      </div>
+    </React.Fragment>
   );
 };
 
