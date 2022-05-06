@@ -1,0 +1,22 @@
+@import './../../utilities/mixins.module.scss';
+@import './../../utilities/variables.module.scss';
+
+.row {
+  max-width: $maxWidth;
+  margin: 0 auto;
+
+  &:not(:last-child) {
+    margin-bottom: $gutterVertical;
+  }
+
+  @include clearfix();
+
+  .grid-col {
+    width: calc((100% - #{$gutterHorizontal}) / 2);
+    float: left;
+
+    &:not(:last-child) {
+      margin-right: $gutterHorizontal;
+    }
+  }
+}

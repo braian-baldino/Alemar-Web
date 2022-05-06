@@ -5,6 +5,9 @@ import Divider from '@material-ui/core/Divider';
 import styles from './Accountify.module.scss';
 import FormControlSelect from '../Forms/FormComponents/FormControlSelect';
 import Typography from '@material-ui/core/Typography';
+import MaterialButton from '../UI/MaterialButton';
+import Expenses from './Expenses';
+import Modal from './../UI/Modal';
 
 const mockData = [
   {
@@ -139,12 +142,21 @@ const selectValues = [
 ];
 
 const Accountify = () => {
+  const [showExpenses, setShowExpenses] = useState(false);
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [data, setData] = useState([]);
 
   const monthValueHandler = value => {
     setMonth(value);
     dataHandler(value);
+  };
+
+  const openExpensesHandler = () => {
+    setShowExpenses(true);
+  };
+
+  const onCloseFormHandler = () => {
+    setShowExpenses(false);
   };
 
   const dataHandler = value => {
@@ -159,8 +171,20 @@ const Accountify = () => {
   return (
     <React.Fragment>
       <div
-        style={{ display: 'flex', justifyContent: 'center', marginTop: '1%' }}
+        style={{
+          width: '25%',
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
+          margin: '0 auto',
+          marginTop: '1%',
+        }}
       >
+        <MaterialButton
+          color='primary'
+          label='view'
+          onClick={openExpensesHandler}
+        />
         <FormControlSelect
           id='month'
           label='Mes'
@@ -169,10 +193,15 @@ const Accountify = () => {
           selectValue={month}
         />
       </div>
+
       {data.length >= 1 && <PieChart data={data} />}
       {data.length < 1 && (
         <div
-          style={{ display: 'flex', justifyContent: 'center', marginTop: '3%' }}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '3%',
+          }}
         >
           <Typography variant='h4'>No se registra informacion</Typography>
         </div>
@@ -183,6 +212,11 @@ const Accountify = () => {
           <ActionButtons />
         </div>
       </div>
+      {showExpenses ? (
+        <Modal onClose={onCloseFormHandler}>
+          <Expenses />
+        </Modal>
+      ) : null}
     </React.Fragment>
   );
 };

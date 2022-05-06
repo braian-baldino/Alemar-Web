@@ -7,6 +7,14 @@
   border-radius: 4px;
 }
 
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
 @mixin shadow() {
   box-shadow: 2px 4px 30px 0px $shadow;
 }

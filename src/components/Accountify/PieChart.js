@@ -4,7 +4,7 @@ import { ResponsivePie } from '@nivo/pie';
 const PieChart = props => {
   const { data } = props;
   return (
-    <div style={{ height: '72%' }}>
+    <div style={{ height: '70%' }}>
       <ResponsivePie
         data={data}
         margin={{ top: 50, right: 50, bottom: 80, left: 50 }}
